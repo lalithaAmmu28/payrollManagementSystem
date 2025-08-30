@@ -1,7 +1,94 @@
 package com.pms.backend.controller;
 
-/**
- * Handles employee CRUD [/api/v1/employees]
- */
+import com.pms.backend.dto.ApiResponse;
+import com.pms.backend.dto.employee.EmployeeCreateRequest;
+import com.pms.backend.dto.employee.EmployeeResponse;
+import com.pms.backend.dto.employee.EmployeeUpdateRequest;
+import com.pms.backend.service.EmployeeService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/v1/employees")
+@Tag(name = "Employee Management", description = "Admin-only endpoints for managing employees")
+@SecurityRequirement(name = "Bearer Authentication")
 public class EmployeeController {
+
+    private final EmployeeService employeeService;
+
+    @Autowired
+    public EmployeeController(EmployeeService employeeService) {
+        this.employeeService = employeeService;
+    }
+
+    @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
+    @Operation(summary = "Create new employee", 
+               description = "Create a new employee with associated user account (Admin only)")
+    public ResponseEntity<ApiResponse<EmployeeResponse>> createEmployee(
+            @Valid @RequestBody EmployeeCreateRequest request) {
+        
+        EmployeeResponse employee = employeeService.createEmployee(request);
+        
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(new ApiResponse<>(true, "Employee created successfully", employee));
+    }
+
+    @GetMapping("/{employeeId}")
+    @PreAuthorize("hasRole('ADMIN')")
+    @Operation(summary = "Get employee by ID", 
+               description = "Retrieve a specific employee by ID (Admin only)")
+    public ResponseEntity<ApiResponse<EmployeeResponse>> getEmployeeById(
+            @Parameter(description = "Employee ID") @PathVariable String employeeId) {
+        
+        EmployeeResponse employee = employeeService.getEmployeeById(employeeId);
+        
+        return ResponseEntity.ok(new ApiResponse<>(true, "Employee retrieved successfully", employee));
+    }
+
+    @GetMapping
+    @PreAuthorize("hasRole('ADMIN')")
+    @Operation(summary = "Get all employees", 
+               description = "Retrieve all employees (Admin only)")
+    public ResponseEntity<ApiResponse<List<EmployeeResponse>>> getAllEmployees() {
+        
+        List<EmployeeResponse> employees = employeeService.getAllEmployees();
+        
+        return ResponseEntity.ok(new ApiResponse<>(true, "Employees retrieved successfully", employees));
+    }
+
+    @PutMapping("/{employeeId}")
+    @PreAuthorize("hasRole('ADMIN')")
+    @Operation(summary = "Update employee", 
+               description = "Update an existing employee (Admin only)")
+    public ResponseEntity<ApiResponse<EmployeeResponse>> updateEmployee(
+            @Parameter(description = "Employee ID") @PathVariable String employeeId,
+            @Valid @RequestBody EmployeeUpdateRequest request) {
+        
+        EmployeeResponse employee = employeeService.updateEmployee(employeeId, request);
+        
+        return ResponseEntity.ok(new ApiResponse<>(true, "Employee updated successfully", employee));
+    }
+
+    @DeleteMapping("/{employeeId}")
+    @PreAuthorize("hasRole('ADMIN')")
+    @Operation(summary = "Delete employee", 
+               description = "Delete an employee and associated user account (Admin only)")
+    public ResponseEntity<ApiResponse<Void>> deleteEmployee(
+            @Parameter(description = "Employee ID") @PathVariable String employeeId) {
+        
+        employeeService.deleteEmployee(employeeId);
+        
+        return ResponseEntity.ok(new ApiResponse<>(true, "Employee deleted successfully", null));
+    }
 }

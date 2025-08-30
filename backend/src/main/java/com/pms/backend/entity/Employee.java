@@ -24,6 +24,19 @@ public class Employee {
     @Column(name = "department_id", length = 36, nullable = false)
     private String departmentId;
     
+    // JPA Relationships (for easier data access)
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", insertable = false, updatable = false)
+    private User user;
+    
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "job_id", insertable = false, updatable = false)
+    private JobRole jobRole;
+    
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "department_id", insertable = false, updatable = false)
+    private Department department;
+    
     @Column(name = "first_name", length = 50, nullable = false)
     private String firstName;
     
@@ -130,6 +143,30 @@ public class Employee {
     
     public void setLeaveBalance(BigDecimal leaveBalance) {
         this.leaveBalance = leaveBalance;
+    }
+    
+    public User getUser() {
+        return user;
+    }
+    
+    public void setUser(User user) {
+        this.user = user;
+    }
+    
+    public JobRole getJobRole() {
+        return jobRole;
+    }
+    
+    public void setJobRole(JobRole jobRole) {
+        this.jobRole = jobRole;
+    }
+    
+    public Department getDepartment() {
+        return department;
+    }
+    
+    public void setDepartment(Department department) {
+        this.department = department;
     }
     
     public LocalDateTime getCreatedAt() {
