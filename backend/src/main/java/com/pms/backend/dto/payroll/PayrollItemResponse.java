@@ -1,58 +1,35 @@
-package com.pms.backend.entity;
+package com.pms.backend.dto.payroll;
 
-import jakarta.persistence.*;
-import org.hibernate.annotations.GenericGenerator;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.math.BigDecimal;
 
-@Entity
-@Table(name = "payroll_items")
-public class PayrollItem {
-    @Id
-    @GeneratedValue(generator = "uuid")
-    @GenericGenerator(name = "uuid", strategy = "uuid2")
-    @Column(name = "item_id", length = 36)
+public class PayrollItemResponse {
+    
     private String itemId;
-    
-    @Column(name = "run_id", length = 36, nullable = false)
     private String runId;
-    
-    @Column(name = "employee_id", length = 36, nullable = false)
     private String employeeId;
-    
-    // JPA Relationships (for easier data access)
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "run_id", insertable = false, updatable = false)
-    private PayrollRun payrollRun;
-    
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "employee_id", insertable = false, updatable = false)
-    private Employee employee;
-    
-    @Column(name = "base_salary", precision = 12, scale = 2, nullable = false)
     private BigDecimal baseSalary;
-    
-    @Column(name = "bonus", precision = 12, scale = 2, nullable = false)
-    private BigDecimal bonus = BigDecimal.ZERO;
-    
-    @Column(name = "deductions", precision = 12, scale = 2, nullable = false)
-    private BigDecimal deductions = BigDecimal.ZERO;
-    
-    @Column(name = "net_salary", precision = 12, scale = 2, nullable = false)
+    private BigDecimal bonus;
+    private BigDecimal deductions;
     private BigDecimal netSalary;
-    
-    @Column(name = "pay_date")
     private LocalDate payDate;
-    
-    @Column(name = "created_at")
     private LocalDateTime createdAt;
-    
-    @Column(name = "updated_at")
     private LocalDateTime updatedAt;
     
+    // Employee information
+    private String employeeName;
+    private String employeeEmail;
+    private String departmentName;
+    private String jobTitle;
+    
+    // Payroll run information
+    private Integer runYear;
+    private Integer runMonth;
+    private String runStatus;
+    
     // Constructors
-    public PayrollItem() {}
+    public PayrollItemResponse() {}
     
     // Getters and Setters
     public String getItemId() {
@@ -135,43 +112,82 @@ public class PayrollItem {
         this.updatedAt = updatedAt;
     }
     
-    public PayrollRun getPayrollRun() {
-        return payrollRun;
+    public String getEmployeeName() {
+        return employeeName;
     }
     
-    public void setPayrollRun(PayrollRun payrollRun) {
-        this.payrollRun = payrollRun;
+    public void setEmployeeName(String employeeName) {
+        this.employeeName = employeeName;
     }
     
-    public Employee getEmployee() {
-        return employee;
+    public String getEmployeeEmail() {
+        return employeeEmail;
     }
     
-    public void setEmployee(Employee employee) {
-        this.employee = employee;
+    public void setEmployeeEmail(String employeeEmail) {
+        this.employeeEmail = employeeEmail;
+    }
+    
+    public String getDepartmentName() {
+        return departmentName;
+    }
+    
+    public void setDepartmentName(String departmentName) {
+        this.departmentName = departmentName;
+    }
+    
+    public String getJobTitle() {
+        return jobTitle;
+    }
+    
+    public void setJobTitle(String jobTitle) {
+        this.jobTitle = jobTitle;
+    }
+    
+    public Integer getRunYear() {
+        return runYear;
+    }
+    
+    public void setRunYear(Integer runYear) {
+        this.runYear = runYear;
+    }
+    
+    public Integer getRunMonth() {
+        return runMonth;
+    }
+    
+    public void setRunMonth(Integer runMonth) {
+        this.runMonth = runMonth;
+    }
+    
+    public String getRunStatus() {
+        return runStatus;
+    }
+    
+    public void setRunStatus(String runStatus) {
+        this.runStatus = runStatus;
     }
     
     // Helper methods
     public BigDecimal getGrossSalary() {
-        return baseSalary.add(bonus != null ? bonus : BigDecimal.ZERO);
+        BigDecimal base = baseSalary != null ? baseSalary : BigDecimal.ZERO;
+        BigDecimal bonusAmount = bonus != null ? bonus : BigDecimal.ZERO;
+        return base.add(bonusAmount);
     }
     
     public BigDecimal getTotalDeductions() {
         return deductions != null ? deductions : BigDecimal.ZERO;
     }
     
-    public void calculateNetSalary() {
-        this.netSalary = getGrossSalary().subtract(getTotalDeductions());
+    public String getPayrollPeriod() {
+        return String.format("%04d-%02d", runYear, runMonth);
     }
     
-    @PrePersist
-    protected void onCreate() {
-        createdAt = LocalDateTime.now();
-        updatedAt = LocalDateTime.now();
+    public String getDisplayName() {
+        return employeeName != null ? employeeName : "Unknown Employee";
     }
     
-    @PreUpdate
-    protected void onUpdate() {
-        updatedAt = LocalDateTime.now();
+    public boolean isPayslipAvailable() {
+        return "Locked".equals(runStatus);
     }
 }

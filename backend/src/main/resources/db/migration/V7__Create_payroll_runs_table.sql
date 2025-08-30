@@ -5,7 +5,9 @@ CREATE TABLE payroll_runs (
     run_year INT NOT NULL,
     status ENUM('Draft', 'Processed', 'Locked') NOT NULL DEFAULT 'Draft',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    processed_at TIMESTAMP NULL,
+    locked_at TIMESTAMP NULL
 );
 
 -- Create indexes for performance

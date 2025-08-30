@@ -30,6 +30,12 @@ public class PayrollRun {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
     
+    @Column(name = "processed_at")
+    private LocalDateTime processedAt;
+    
+    @Column(name = "locked_at")
+    private LocalDateTime lockedAt;
+    
     // Constructors
     public PayrollRun() {}
     
@@ -80,6 +86,39 @@ public class PayrollRun {
     
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+    
+    public LocalDateTime getProcessedAt() {
+        return processedAt;
+    }
+    
+    public void setProcessedAt(LocalDateTime processedAt) {
+        this.processedAt = processedAt;
+    }
+    
+    public LocalDateTime getLockedAt() {
+        return lockedAt;
+    }
+    
+    public void setLockedAt(LocalDateTime lockedAt) {
+        this.lockedAt = lockedAt;
+    }
+    
+    // Helper methods
+    public boolean isDraft() {
+        return PayrollStatus.Draft.equals(status);
+    }
+    
+    public boolean isProcessed() {
+        return PayrollStatus.Processed.equals(status);
+    }
+    
+    public boolean isLocked() {
+        return PayrollStatus.Locked.equals(status);
+    }
+    
+    public String getPeriodDescription() {
+        return String.format("%04d-%02d", runYear, runMonth);
     }
     
     @PrePersist
