@@ -4,7 +4,10 @@ import com.pms.backend.dto.ApiResponse;
 import com.pms.backend.dto.employee.EmployeeCreateRequest;
 import com.pms.backend.dto.employee.EmployeeResponse;
 import com.pms.backend.dto.employee.EmployeeUpdateRequest;
+import com.pms.backend.dto.salary.SalaryStructureRequest;
+import com.pms.backend.dto.salary.SalaryStructureResponse;
 import com.pms.backend.service.EmployeeService;
+import com.pms.backend.service.SalaryStructureService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -25,10 +28,12 @@ import java.util.List;
 public class EmployeeController {
 
     private final EmployeeService employeeService;
+    private final SalaryStructureService salaryStructureService;
 
     @Autowired
-    public EmployeeController(EmployeeService employeeService) {
+    public EmployeeController(EmployeeService employeeService, SalaryStructureService salaryStructureService) {
         this.employeeService = employeeService;
+        this.salaryStructureService = salaryStructureService;
     }
 
     @PostMapping
@@ -90,5 +95,45 @@ public class EmployeeController {
         employeeService.deleteEmployee(employeeId);
         
         return ResponseEntity.ok(new ApiResponse<>(true, "Employee deleted successfully", null));
+    }
+
+    // === SALARY STRUCTURE ENDPOINTS ===
+
+    @GetMapping("/{employeeId}/salary-structures")
+    @PreAuthorize("hasRole('ADMIN')")
+    @Operation(summary = "Get employee salary history", 
+               description = "Retrieve the complete salary structure history for an employee (Admin only)")
+    public ResponseEntity<ApiResponse<List<SalaryStructureResponse>>> getEmployeeSalaryHistory(
+            @Parameter(description = "Employee ID") @PathVariable String employeeId) {
+        
+        List<SalaryStructureResponse> salaryHistory = salaryStructureService.getStructureHistoryForEmployee(employeeId);
+        
+        return ResponseEntity.ok(new ApiResponse<>(true, "Salary history retrieved successfully", salaryHistory));
+    }
+
+    @PostMapping("/{employeeId}/salary-structures")
+    @PreAuthorize("hasRole('ADMIN')")
+    @Operation(summary = "Assign new salary structure", 
+               description = "Assign a new salary structure to an employee. Automatically manages timeline by closing previous structures (Admin only)")
+    public ResponseEntity<ApiResponse<SalaryStructureResponse>> assignSalaryStructure(
+            @Parameter(description = "Employee ID") @PathVariable String employeeId,
+            @Valid @RequestBody SalaryStructureRequest request) {
+        
+        SalaryStructureResponse salaryStructure = salaryStructureService.assignNewStructure(employeeId, request);
+        
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(new ApiResponse<>(true, "Salary structure assigned successfully", salaryStructure));
+    }
+
+    @GetMapping("/{employeeId}/salary-structures/current")
+    @PreAuthorize("hasRole('ADMIN')")
+    @Operation(summary = "Get current salary structure", 
+               description = "Retrieve the currently active salary structure for an employee (Admin only)")
+    public ResponseEntity<ApiResponse<SalaryStructureResponse>> getCurrentSalaryStructure(
+            @Parameter(description = "Employee ID") @PathVariable String employeeId) {
+        
+        SalaryStructureResponse currentStructure = salaryStructureService.getCurrentStructureForEmployee(employeeId);
+        
+        return ResponseEntity.ok(new ApiResponse<>(true, "Current salary structure retrieved successfully", currentStructure));
     }
 }

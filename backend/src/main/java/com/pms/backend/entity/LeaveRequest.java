@@ -19,6 +19,11 @@ public class LeaveRequest {
     @Column(name = "employee_id", length = 36, nullable = false)
     private String employeeId;
     
+    // JPA Relationship (for easier data access)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "employee_id", insertable = false, updatable = false)
+    private Employee employee;
+    
     @Enumerated(EnumType.STRING)
     @Column(name = "leave_type", nullable = false)
     private LeaveType leaveType;
@@ -115,6 +120,34 @@ public class LeaveRequest {
     
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+    
+    public Employee getEmployee() {
+        return employee;
+    }
+    
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
+    }
+    
+    // Helper methods
+    public long getDurationInDays() {
+        if (startDate != null && endDate != null) {
+            return java.time.temporal.ChronoUnit.DAYS.between(startDate, endDate) + 1;
+        }
+        return 0;
+    }
+    
+    public boolean isPaidLeave() {
+        return LeaveType.Paid.equals(leaveType);
+    }
+    
+    public boolean isPending() {
+        return LeaveStatus.Pending.equals(status);
+    }
+    
+    public boolean isApproved() {
+        return LeaveStatus.Approved.equals(status);
     }
     
     @PrePersist
