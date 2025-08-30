@@ -125,6 +125,21 @@ public class PayrollController {
                 String.format("Payroll items retrieved successfully (%d items)", items.size()), items));
     }
 
+    @GetMapping("/runs/{runId}/employees/{employeeId}")
+    @PreAuthorize("hasRole('ADMIN')")
+    @Operation(summary = "Get individual employee payroll item for Admin verification", 
+               description = "Retrieve specific employee's payroll item details for a run to verify before locking (Admin only)")
+    public ResponseEntity<ApiResponse<PayrollItemResponse>> getEmployeePayrollItemForAdmin(
+            @Parameter(description = "Payroll run ID") @PathVariable String runId,
+            @Parameter(description = "Employee ID") @PathVariable String employeeId) {
+        
+        PayrollItemResponse item = payrollService.getEmployeePayrollItemForAdmin(runId, employeeId);
+        
+        String message = String.format("Payroll item retrieved successfully for employee %s in run %s", 
+                                       employeeId, runId);
+        return ResponseEntity.ok(new ApiResponse<>(true, message, item));
+    }
+
     @GetMapping("/runs/{runId}/statistics")
     @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Get payroll statistics", 

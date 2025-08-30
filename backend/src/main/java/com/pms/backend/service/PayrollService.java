@@ -43,6 +43,12 @@ public interface PayrollService {
     List<PayrollItemResponse> getPayrollItemsForRun(String runId);
     
     /**
+     * Get individual employee's payroll item for Admin verification
+     * Available for any processed run (Admin only)
+     */
+    PayrollItemResponse getEmployeePayrollItemForAdmin(String runId, String employeeId);
+    
+    /**
      * Get employee's payslip for a specific run
      * Only available for locked runs
      */

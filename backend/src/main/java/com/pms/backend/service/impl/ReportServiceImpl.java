@@ -104,18 +104,12 @@ public class ReportServiceImpl implements ReportService {
             year = Year.now().getValue();
         }
         
-        List<Object[]> results = payrollItemRepository.getTopSpendingDepartments(year);
+        // Use the comprehensive department cost report and limit results
+        List<DepartmentCostDto> allDepartments = getDepartmentCostReport(year, null, null, null);
         
-        return results.stream()
+        return allDepartments.stream()
+                .sorted((d1, d2) -> d2.getTotalNetSalary().compareTo(d1.getTotalNetSalary())) // Sort by net salary descending
                 .limit(limit != null ? limit : 10)  // Default to top 10
-                .map(result -> {
-                    // Create simplified DTO for top spending departments
-                    DepartmentCostDto dto = new DepartmentCostDto();
-                    dto.setDepartmentId((String) result[0]);
-                    dto.setDepartmentName((String) result[1]);
-                    dto.setTotalNetSalary((BigDecimal) result[2]);
-                    return dto;
-                })
                 .collect(Collectors.toList());
     }
     

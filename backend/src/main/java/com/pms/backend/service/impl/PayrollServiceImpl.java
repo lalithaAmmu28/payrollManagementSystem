@@ -251,6 +251,25 @@ public class PayrollServiceImpl implements PayrollService {
     
     @Override
     @Transactional(readOnly = true)
+    public PayrollItemResponse getEmployeePayrollItemForAdmin(String runId, String employeeId) {
+        // Validate that the run exists and is at least processed
+        PayrollRun payrollRun = payrollRunRepository.findById(runId)
+                .orElseThrow(() -> new ResourceNotFoundException("Payroll run not found with ID: " + runId));
+        
+        if (payrollRun.isDraft()) {
+            throw new BadRequestException("Payroll items not yet available. Payroll run must be processed first.");
+        }
+        
+        // Find the payroll item for the employee
+        PayrollItem item = payrollItemRepository.findByRunIdAndEmployeeId(runId, employeeId)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                    "Payroll item not found for employee " + employeeId + " in run " + runId));
+        
+        return convertToPayrollItemResponse(item);
+    }
+    
+    @Override
+    @Transactional(readOnly = true)
     public PayrollItemResponse getEmployeePayslip(String runId, String employeeId) {
         // Validate that the run is locked
         PayrollRun payrollRun = payrollRunRepository.findById(runId)
