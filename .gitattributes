@@ -1,0 +1,11 @@
+/mvnw text eol=lf
+*.cmd text eol=crlf
+# Auto-detect text files and normalize to LF in repo
+* text=auto
+
+# Windows batch files → CRLF
+*.cmd text eol=crlf
+*.bat text eol=crlf
+
+# Shell scripts → LF
+*.sh text eol=lf

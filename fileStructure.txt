@@ -1,0 +1,95 @@
+backend/
+└── src
+└── main
+├── java
+│   └── com
+│       └── pms
+│           └── backend
+│               ├── BackendApplication.java   // Main application entry point
+│               │
+│               ├── config/                 // For all configuration beans
+│               │   ├── SecurityConfig.java         // Spring Security, JWT filter chain, CORS
+│               │   └── SwaggerConfig.java          // Swagger UI configuration [cite: 107]
+│               │
+│               ├── controller/             // REST API layer (endpoints)
+│               │   ├── AuthController.java             // Handles login API [/api/v1/auth]
+│               │   ├── UserController.java             // Handles user-specific actions like password change
+│               │   ├── EmployeeController.java           // Handles employee CRUD [/api/v1/employees]
+│               │   ├── DepartmentController.java       // Handles department CRUD [/api/v1/departments]
+│               │   ├── JobRoleController.java          // Handles job role CRUD [/api/v1/jobs]
+│               │   ├── LeaveRequestController.java     // Handles leave management APIs [/api/v1/leave-requests]
+│               │   ├── PayrollController.java          // Handles payroll run APIs [/api/v1/payroll]
+│               │   └── ReportController.java           // Handles reporting APIs [/api/v1/reports]
+│               │
+│               ├── dto/                    // Data Transfer Objects (for API request/response)
+│               │   ├── auth/
+│               │   │   ├── LoginRequest.java
+│               │   │   └── JwtAuthResponse.java
+│               │   ├── user/
+│               │   │   ├── UserDto.java
+│               │   │   └── PasswordChangeDto.java
+│               │   ├── employee/
+│               │   │   └── EmployeeDto.java
+│               │   ├── leave/
+│               │   │   └── LeaveRequestDto.java
+│               │   ├── payroll/
+│               │   │   ├── PayrollRunDto.java
+│               │   │   └── PayrollItemDto.java
+│               │   └── ApiResponse.java              // Generic API response wrapper
+│               │
+│               ├── entity/                 // JPA entities mapping to database tables [cite: 79]
+│               │   ├── User.java
+│               │   ├── Employee.java
+│               │   ├── Department.java
+│               │   ├── JobRole.java
+│               │   ├── LeaveRequest.java
+│               │   ├── PayrollRun.java
+│               │   ├── PayrollItem.java
+│               │   └── enums/                    // Enumerations for roles and statuses
+│               │       ├── Role.java
+│               │       ├── LeaveStatus.java
+│               │       └── PayrollStatus.java
+│               │
+│               ├── exception/              // Custom exceptions and global handler
+│               │   ├── ResourceNotFoundException.java
+│               │   ├── BadRequestException.java
+│               │   └── GlobalExceptionHandler.java   // Handles all exceptions thrown by the app
+│               │
+│               ├── repository/             // Data Access Layer (interfaces extending JpaRepository)
+│               │   ├── UserRepository.java
+│               │   ├── EmployeeRepository.java
+│               │   ├── DepartmentRepository.java
+│               │   ├── JobRoleRepository.java
+│               │   ├── LeaveRequestRepository.java
+│               │   ├── PayrollRunRepository.java
+│               │   └── PayrollItemRepository.java
+│               │
+│               ├── security/               // JWT and Spring Security components [cite: 77]
+│               │   ├── JwtTokenProvider.java       // Utility to generate and validate JWTs
+│               │   ├── JwtAuthenticationFilter.java  // Filter to check JWT in request headers
+│               │   └── CustomUserDetailsService.java // Loads user-specific data for Spring Security
+│               │
+│               └── service/                // Business logic layer
+│                   ├── impl/                   // Implementation of the service interfaces
+│                   │   ├── UserServiceImpl.java
+│                   │   ├── EmployeeServiceImpl.java
+│                   │   ├── DepartmentServiceImpl.java
+│                   │   ├── JobRoleServiceImpl.java
+│                   │   ├── LeaveRequestServiceImpl.java
+│                   │   ├── PayrollServiceImpl.java
+│                   │   └── ReportServiceImpl.java
+│                   │
+│                   ├── UserService.java            // Service interface for User operations
+│                   ├── EmployeeService.java        // Service interface for Employee operations
+│                   ├── DepartmentService.java
+│                   ├── JobRoleService.java
+│                   ├── LeaveRequestService.java
+│                   ├── PayrollService.java
+│                   └── ReportService.java
+│
+└── resources
+├── application.properties    // Main configuration file for database, server, JWT secret etc.
+├── static/                   // For static assets (if any)
+└── templates/                // For template files (if any)
+
+└── pom.xml                         // Maven project configuration (dependencies, plugins etc.)
