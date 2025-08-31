@@ -48,7 +48,7 @@ const AdminLayout = ({ children }) => {
                 onClick={() => handleNavigation('/admin/employees')}
               >
                 <i className="fas fa-users nav-icon"></i>
-                <span className="nav-label">Employee Management</span>
+                <span className="nav-label">Employees</span>
               </button>
             </li>
             

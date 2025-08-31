@@ -1,0 +1,485 @@
+/* Employee Detail Tabs Shared Styles */
+
+.tab-title {
+  color: var(--color-text-heading);
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  font-size: 18px;
+}
+
+/* Profile Tab Styles */
+.profile-tab .profile-view,
+.profile-tab .profile-edit {
+  padding: 1rem 0;
+}
+
+.profile-tab .edit-btn,
+.profile-tab .cancel-btn {
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.profile-tab .edit-btn {
+  border-color: black;
+  color: black;
+}
+
+.profile-tab .edit-btn:hover {
+  background: grey;
+  color: white;
+  transform: translateY(-1px);
+}
+
+.profile-tab .info-group {
+  margin-bottom: 1.5rem;
+}
+
+.profile-tab .info-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--color-text-body);
+  margin-bottom: 0.5rem;
+}
+
+.profile-tab .info-value {
+  font-size: 16px;
+  color: var(--color-text-heading);
+  font-weight: 500;
+}
+
+.profile-tab .leave-balance {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  background: rgba(76, 81, 191, 0.1);
+  color: var(--color-accent);
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.profile-tab .form-actions {
+  margin-top: 2rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--color-border);
+}
+
+.profile-tab .save-btn {
+  background: var(--color-accent);
+  border-color: black;
+  color:black;
+  border-radius: 8px;
+  padding: 0.75rem 2rem;
+  font-weight: 500;
+}
+
+.profile-tab .save-btn:hover {
+  background: grey;
+  border-color: grey;
+  color: white;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(76, 81, 191, 0.3);
+}
+
+/* Salary Structure Tab Styles */
+.salary-structure-tab .add-structure-btn {
+  background: var(--color-accent);
+  border-color: black;
+  color: black;
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.salary-structure-tab .add-structure-btn:hover {
+  background: grey;
+  border-color: grey;
+  color: white;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(76, 81, 191, 0.3);
+}
+
+.salary-structure-tab .no-structures {
+  text-align: center;
+  padding: 2rem;
+}
+
+.salary-structure-tab .no-structures i {
+  opacity: 0.3;
+}
+
+.salary-structure-tab .salary-timeline {
+  position: relative;
+  padding-left: 1rem;
+}
+
+.salary-structure-tab .timeline-item {
+  position: relative;
+  display: flex;
+  margin-bottom: 2rem;
+}
+
+.salary-structure-tab .timeline-marker {
+  position: relative;
+  margin-right: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.salary-structure-tab .timeline-dot {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--color-bg-primary);
+  border: 3px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-body);
+  font-size: 14px;
+  position: relative;
+  z-index: 2;
+  transition: all 0.3s ease;
+}
+
+.salary-structure-tab .timeline-dot.active {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  color: white;
+  box-shadow: 0 4px 12px rgba(76, 81, 191, 0.3);
+}
+
+.salary-structure-tab .timeline-line {
+  width: 2px;
+  height: 60px;
+  background: var(--color-border);
+  margin-top: 10px;
+}
+
+.salary-structure-tab .timeline-content {
+  flex: 1;
+  padding-top: 0.5rem;
+}
+
+.salary-structure-tab .structure-card {
+  background: white;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  transition: all 0.2s ease;
+}
+
+.salary-structure-tab .structure-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+.salary-structure-tab .structure-header {
+  display: flex;
+  justify-content: between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.salary-structure-tab .structure-amount {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--color-accent);
+  display: flex;
+  align-items: center;
+}
+
+.salary-structure-tab .structure-period {
+  font-size: 14px;
+  color: var(--color-text-body);
+  font-weight: 500;
+}
+
+.salary-structure-tab .structure-bonus {
+  margin-bottom: 1rem;
+  padding: 1rem;
+  background: var(--color-bg-primary);
+  border-radius: 6px;
+}
+
+.salary-structure-tab .bonus-text {
+  margin-top: 0.5rem;
+  color: var(--color-text-heading);
+  font-weight: 500;
+}
+
+.salary-structure-tab .structure-meta {
+  font-size: 12px;
+  color: var(--color-text-body);
+}
+
+/* Payslips Tab Styles */
+.payslips-tab .no-payslips {
+  text-align: center;
+  padding: 2rem;
+}
+
+.payslips-tab .no-payslips i {
+  opacity: 0.3;
+}
+
+.payslips-tab .payslips-accordion .accordion-item {
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  overflow: hidden;
+}
+
+.payslips-tab .payslips-accordion .accordion-header {
+  border: none;
+}
+
+.payslips-tab .payslips-accordion .accordion-button {
+  background: white;
+  border: none;
+  padding: 1.5rem;
+  color: var(--color-text-heading);
+  font-weight: 500;
+}
+
+.payslips-tab .payslips-accordion .accordion-button:focus {
+  box-shadow: none;
+  border: none;
+}
+
+.payslips-tab .payslips-accordion .accordion-button:not(.collapsed) {
+  background: var(--color-bg-primary);
+  color: var(--color-accent);
+}
+
+.payslips-tab .payslip-summary {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.payslips-tab .payslip-period {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.payslips-tab .payslip-amount {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.payslips-tab .net-salary {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--color-success);
+}
+
+.payslips-tab .payslip-details {
+  padding: 1.5rem;
+  background: var(--color-bg-primary);
+}
+
+.payslips-tab .section-title {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+}
+
+.payslips-tab .earnings-breakdown,
+.payslips-tab .deductions-breakdown {
+  background: white;
+  border-radius: 6px;
+  padding: 1rem;
+}
+
+.payslips-tab .earning-item,
+.payslips-tab .deduction-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.payslips-tab .earning-item:last-child,
+.payslips-tab .deduction-item:last-child {
+  border-bottom: none;
+}
+
+.payslips-tab .earning-item.total {
+  margin-top: 0.5rem;
+  padding-top: 1rem;
+  border-top: 2px solid var(--color-border);
+  border-bottom: none;
+  font-weight: 600;
+}
+
+.payslips-tab .earning-label,
+.payslips-tab .deduction-label {
+  color: var(--color-text-heading);
+  font-weight: 500;
+}
+
+.payslips-tab .earning-amount,
+.payslips-tab .deduction-amount {
+  font-weight: 600;
+  color: var(--color-text-heading);
+}
+
+.payslips-tab .net-salary-section {
+  margin-top: 1rem;
+}
+
+.payslips-tab .net-salary-card {
+  background: var(--color-success);
+  color: #4C51BF;
+  border-radius: 8px;
+  padding: 1.5rem;
+  text-align: center;
+}
+
+.payslips-tab .net-salary-label {
+  font-size: 18px;
+  margin-bottom: 0.5rem;
+  color:black;
+}
+
+.payslips-tab .net-salary-amount {
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.payslips-tab .payslip-meta {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--color-border);
+}
+
+/* Leave History Tab Styles */
+.leave-history-tab .no-leave-history {
+  text-align: center;
+  padding: 2rem;
+}
+
+.leave-history-tab .no-leave-history i {
+  opacity: 0.3;
+}
+
+.leave-history-tab .leave-history-table {
+  margin-bottom: 0;
+}
+
+.leave-history-tab .leave-history-table th {
+  background: var(--color-bg-primary);
+  border-top: none;
+  border-bottom: 2px solid var(--color-border);
+  padding: 1rem;
+  font-weight: 600;
+  color: var(--color-text-heading);
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.leave-history-tab .leave-history-table td {
+  padding: 1rem;
+  vertical-align: middle;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.leave-history-tab .leave-row {
+  transition: all 0.2s ease;
+}
+
+.leave-history-tab .leave-row:hover {
+  background-color: rgba(76, 81, 191, 0.05);
+}
+
+.leave-history-tab .duration-badge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  background: rgba(76, 81, 191, 0.1);
+  color: var(--color-accent);
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.leave-history-tab .date-range {
+  font-size: 14px;
+}
+
+.leave-history-tab .view-details-btn {
+  border-color: black;
+  color: black;
+  border-radius: 6px;
+  padding: 0.25rem 0.75rem;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.leave-history-tab .view-details-btn:hover {
+  background: grey;
+  border-color: grey;
+  color: white;
+}
+
+/* Leave Details Modal */
+.leave-details .detail-group {
+  margin-bottom: 1rem;
+}
+
+.leave-details .detail-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--color-text-body);
+  margin-bottom: 0.5rem;
+}
+
+.leave-details .detail-value {
+  font-size: 16px;
+  color: var(--color-text-heading);
+  font-weight: 500;
+}
+
+.leave-details .reason-text {
+  background: var(--color-bg-primary);
+  padding: 1rem;
+  border-radius: 6px;
+  font-style: italic;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .salary-structure-tab .structure-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+  
+  .payslips-tab .payslip-summary {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+  
+  .payslips-tab .payslip-amount {
+    width: 100%;
+    justify-content: space-between;
+  }
+}

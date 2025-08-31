@@ -6,6 +6,7 @@ import { useAuth } from '../context/AuthContext';
 import LoginPage from '../pages/LoginPage';
 import AdminDashboard from '../pages/admin/AdminDashboard';
 import EmployeeDashboard from '../pages/employee/EmployeeDashboard';
+import EmployeeManagementPage from '../pages/admin/EmployeeManagementPage';
 
 // Import employee pages
 import ProfilePage from '../pages/employee/ProfilePage';
@@ -60,10 +61,7 @@ const AppRoutes = () => {
           element={
             <AdminRoute>
               <AdminLayout pageTitle="Employee Management">
-                <div className="content-card fade-in">
-                  <h1>Employee Management</h1>
-                  <p className="text-muted-custom">Employee management module coming soon...</p>
-                </div>
+                <EmployeeManagementPage />
               </AdminLayout>
             </AdminRoute>
           }
