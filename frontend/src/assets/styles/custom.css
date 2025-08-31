@@ -1,0 +1,157 @@
+/* Global CSS Variables and Base Styles */
+
+/* Import Poppins font from Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+/* Color Variables from Design System */
+:root {
+  /* Primary Colors */
+  --primary-dark: #212529;
+  --primary-background: #f8f9fa;
+  --cards-background: #ffffff;
+  --borders-color: #dee2e6;
+  
+  /* Text Colors */
+  --text-primary: #212529;
+  --text-secondary: #6c757d;
+  
+  /* Accent & Action Colors */
+  --accent-color: #4C51BF;
+  --accent-hover: #3e46a8;
+  
+  /* Feedback Colors */
+  --success-color: #38A169;
+  --error-color: #E53E3E;
+  --warning-color: #F6AD55;
+  --info-color: #4299E1;
+  
+  /* Component Styling */
+  --border-radius: 8px;
+  --box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  --box-shadow-hover: 0 4px 8px rgba(0, 0, 0, 0.15);
+  
+  /* Transitions */
+  --transition-fast: 0.15s ease-in-out;
+  --transition-normal: 0.3s ease-in-out;
+  --transition-slow: 0.5s ease-in-out;
+}
+
+/* Base Typography */
+* {
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  background-color: var(--primary-background);
+  color: var(--text-primary);
+  line-height: 1.6;
+}
+
+/* Typography Hierarchy */
+h1 {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 1.5rem;
+}
+
+h2 {
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 1.25rem;
+}
+
+h3 {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+}
+
+p, .body-text {
+  font-size: 16px;
+  font-weight: 400;
+  color: var(--text-secondary);
+  margin-bottom: 1rem;
+}
+
+/* Global Component Overrides */
+.card {
+  background-color: var(--cards-background);
+  border: 1px solid var(--borders-color);
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  transition: box-shadow var(--transition-normal);
+}
+
+.card:hover {
+  box-shadow: var(--box-shadow-hover);
+}
+
+.btn {
+  border-radius: var(--border-radius);
+  font-weight: 500;
+  transition: all var(--transition-fast);
+}
+
+.btn-primary {
+  background-color: var(--accent-color);
+  border-color: var(--accent-color);
+}
+
+.btn-primary:hover {
+  background-color: var(--accent-hover);
+  border-color: var(--accent-hover);
+}
+
+/* Utility Classes */
+.text-muted-custom {
+  color: var(--text-secondary) !important;
+}
+
+.bg-light-custom {
+  background-color: var(--primary-background) !important;
+}
+
+.content-card {
+  background: var(--cards-background);
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  padding: 2rem;
+  margin-bottom: 2rem;
+}
+
+.fade-in {
+  animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .content-card {
+    padding: 1rem;
+  }
+  
+  h1 {
+    font-size: 24px;
+  }
+  
+  h2 {
+    font-size: 20px;
+  }
+  
+  h3 {
+    font-size: 16px;
+  }
+}

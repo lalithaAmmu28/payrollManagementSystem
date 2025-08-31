@@ -1,0 +1,53 @@
+/* SkeletonLoader.css - Dedicated styles for SkeletonLoader component */
+
+.skeleton-loader {
+  display: block;
+  background-color: #e9ecef;
+  border-radius: 4px;
+  animation: skeleton-pulse 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes skeleton-pulse {
+  0% {
+    background-color: #e9ecef;
+  }
+  100% {
+    background-color: #f8f9fa;
+  }
+}
+
+/* Skeleton variants */
+.skeleton-text {
+  height: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.skeleton-text:last-child {
+  margin-bottom: 0;
+}
+
+.skeleton-title {
+  height: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.skeleton-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+.skeleton-button {
+  height: 38px;
+  width: 100px;
+}
+
+.skeleton-card {
+  height: 200px;
+  border-radius: 8px;
+}
+
+.skeleton-table-row {
+  height: 50px;
+  margin-bottom: 0.5rem;
+}

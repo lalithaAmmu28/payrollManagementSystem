@@ -1,0 +1,57 @@
+/* ToastNotification.css - Dedicated styles for ToastNotification component */
+
+.toast {
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.toast-success {
+  background-color: #38A169;
+  color: white;
+}
+
+.toast-error {
+  background-color: #E53E3E;
+  color: white;
+}
+
+.toast-warning {
+  background-color: #F6AD55;
+  color: white;
+}
+
+.toast-info {
+  background-color: #4299E1;
+  color: white;
+}
+
+/* Toast positioning */
+.toast-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 9999;
+}
+
+/* Toast animations */
+.toast-enter {
+  transform: translateX(100%);
+  opacity: 0;
+}
+
+.toast-enter-active {
+  transform: translateX(0);
+  opacity: 1;
+  transition: all 0.3s ease;
+}
+
+.toast-exit {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+.toast-exit-active {
+  transform: translateX(100%);
+  opacity: 0;
+  transition: all 0.3s ease;
+}

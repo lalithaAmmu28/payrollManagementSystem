@@ -1,0 +1,28 @@
+/* LoadingSpinner.css - Dedicated styles for LoadingSpinner component */
+
+.spinner-custom {
+  color: #4C51BF;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Button spinner variants */
+.btn .spinner-custom {
+  margin-right: 0.5rem;
+}
+
+.btn-sm .spinner-custom {
+  font-size: 0.875rem;
+}
+
+.btn-lg .spinner-custom {
+  font-size: 1.25rem;
+}

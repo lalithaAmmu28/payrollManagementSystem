@@ -1,0 +1,45 @@
+# Design principles
+
+# Frontend Design System & UX Principles
+
+## 1. Color Palette (Muted & Professional)
+
+- Primary Dark (Sidebars/Headers): #212529
+- Primary Background: #f8f9fa
+- Cards & Modals Background: #ffffff
+- Borders & Dividers: #dee2e6
+- Text (Headings): #212529
+- Text (Body & Subtle Text): #6c757d
+- Accent & Action Color (Buttons, Links, Highlights): #4C51BF (Muted Indigo)
+- Feedback (Success): #38A169 (Muted Green)
+- Feedback (Error): #E53E3E (Muted Red)
+
+## 2. Typography
+
+- Font Family: 'Poppins', sans-serif (imported from Google Fonts).
+- Page Titles (H1): 28px, bold.
+- Section Headers (H2): 22px, semi-bold.
+- Card/Modal Titles (H3): 18px, semi-bold.
+- Body Text & Table Content: 16px, regular.
+
+## 3. Component Styling
+
+- Framework: Bootstrap 5 for core components (grid, tables, modals, forms).
+- Custom CSS: Supplement Bootstrap with custom styles for branding.
+- Border Radius: All components (buttons, cards, modals, inputs) must have a consistent border-radius: 8px for a modern, soft look.
+- Shadows: Cards, modals, and hovered buttons must have a subtle box-shadow to create depth.
+
+## 4. Animations & Transitions (CSS Keyframes)
+
+- Page Transitions: Content should fade in and slide up slightly on navigation.
+- Modal/Pane Transitions: Modals should scale up and fade in. Side panes should slide in smoothly from the right.
+- Loading States: Use Skeleton Loaders for data-heavy components like tables and dashboards. For button clicks, use an inline spinner.
+
+## 5. Core UX Principles & Patterns
+
+- Feedback: Every user action (form submission, deletion, etc.) must be acknowledged with a "Toast" notification and a loading state on the button.
+- Error Prevention: All forms must use Formik for state and Yup for validation. Provide clear, inline error messages. Use confirmation modals for destructive actions (e.g., deleting an employee).
+- Rich UX for Admin Modules:
+- Employee Management: Implement a Master-Detail Pane View. Clicking a row in the main employee table slides out a detail pane from the right with tabs for Profile, Salary Structure Timeline, and History. The main list remains visible.
+- Organization Management (Departments/Jobs): Implement Inline Editing and Quick-Add directly within the table to make management fast and efficient.
+- Payroll Management: The UI must be a workflow-driven interface. Buttons and actions must be conditionally enabled/disabled based on the payroll run's status (DRAFT, PROCESSED, LOCKED) to guide the admin.
