@@ -1,0 +1,318 @@
+/* PayslipsPage.css - Dedicated styles for PayslipsPage component */
+
+.payslips-page {
+  padding: 2rem 0;
+}
+
+.page-header {
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.page-header h1 {
+  color: var(--text-primary);
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.page-header p {
+  color: var(--text-secondary);
+  font-size: 1rem;
+  margin-bottom: 0;
+}
+
+/* Empty State */
+.empty-state-card {
+  border: none;
+  box-shadow: var(--box-shadow);
+  border-radius: var(--border-radius);
+}
+
+.empty-state {
+  text-align: center;
+  padding: 3rem 2rem;
+  color: var(--text-secondary);
+}
+
+.empty-state i {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+  opacity: 0.5;
+  color: var(--accent-color);
+}
+
+.empty-state h4 {
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+}
+
+.empty-state p {
+  margin-bottom: 0;
+  font-size: 1rem;
+}
+
+/* Payslips Card */
+.payslips-card {
+  border: none;
+  box-shadow: var(--box-shadow);
+  border-radius: var(--border-radius);
+}
+
+.payslips-card .card-header {
+  background-color: var(--cards-background);
+  border-bottom: 1px solid var(--borders-color);
+  padding: 1.5rem;
+}
+
+.payslips-card .card-header h3 {
+  margin: 0 0 0.25rem 0;
+  color: var(--text-primary);
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+/* Payslips Accordion */
+.payslips-accordion {
+  border-radius: 0;
+}
+
+.payslip-accordion-item {
+  border: none;
+  border-bottom: 1px solid var(--borders-color);
+}
+
+.payslip-accordion-item:last-child {
+  border-bottom: none;
+}
+
+.payslip-accordion-item .accordion-header {
+  border: none;
+}
+
+.payslip-accordion-item .accordion-button {
+  background-color: transparent;
+  border: none;
+  padding: 1.5rem;
+  box-shadow: none;
+  border-radius: 0;
+  transition: background-color var(--transition-fast);
+}
+
+.payslip-accordion-item .accordion-button:hover {
+  background-color: var(--primary-background);
+}
+
+.payslip-accordion-item .accordion-button:not(.collapsed) {
+  background-color: var(--primary-background);
+  color: var(--text-primary);
+  box-shadow: none;
+}
+
+.payslip-accordion-item .accordion-button:focus {
+  box-shadow: none;
+  border: none;
+}
+
+.payslip-accordion-item .accordion-button::after {
+  color: var(--accent-color);
+  font-size: 1.2rem;
+}
+
+.payslip-body {
+  padding: 2rem;
+  background-color: var(--cards-background);
+}
+
+/* Payslip Summary */
+.payslip-summary {
+  width: 100%;
+}
+
+.pay-period h5 {
+  margin: 0;
+  color: var(--text-primary);
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.pay-date p,
+.net-pay p {
+  margin: 0;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.net-pay .amount {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--accent-color);
+}
+
+.status-badge {
+  font-size: 0.8rem;
+  padding: 0.4rem 0.8rem;
+  border-radius: 20px;
+  font-weight: 500;
+}
+
+/* Payslip Details */
+.payslip-details {
+  animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Earnings and Deductions Cards */
+.earnings-card,
+.deductions-card {
+  border: none;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  border-radius: var(--border-radius);
+  margin-bottom: 1rem;
+}
+
+.earnings-card .card-header {
+  background-color: rgba(56, 161, 105, 0.1);
+  border-bottom: 1px solid rgba(56, 161, 105, 0.2);
+  padding: 1rem 1.25rem;
+}
+
+.deductions-card .card-header {
+  background-color: rgba(229, 62, 62, 0.1);
+  border-bottom: 1px solid rgba(229, 62, 62, 0.2);
+  padding: 1rem 1.25rem;
+}
+
+.earnings-card .card-header h5,
+.deductions-card .card-header h5 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.earnings-table,
+.deductions-table {
+  margin-bottom: 0;
+}
+
+.earnings-table td,
+.deductions-table td {
+  padding: 0.75rem 1.25rem;
+  border: none;
+  color: var(--text-primary);
+}
+
+.earnings-table .amount,
+.deductions-table .amount {
+  font-weight: 500;
+  font-family: 'Courier New', monospace;
+}
+
+.total-row {
+  border-top: 2px solid var(--borders-color);
+  background-color: var(--primary-background);
+}
+
+.total-row td {
+  padding-top: 1rem !important;
+  padding-bottom: 1rem !important;
+}
+
+/* Net Pay Card */
+.net-pay-card {
+  border: none;
+  background: linear-gradient(135deg, var(--accent-color), var(--accent-hover));
+  color: white;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow-hover);
+}
+
+.net-pay-card .card-body {
+  padding: 2rem;
+}
+
+.net-pay-card h4 {
+  color: white;
+  font-weight: 600;
+}
+
+.net-pay-card .text-muted {
+  color: rgba(255, 255, 255, 0.8) !important;
+}
+
+.net-amount {
+  color: white;
+  font-weight: 700;
+  font-size: 2.5rem;
+  margin: 0;
+  font-family: 'Courier New', monospace;
+}
+
+/* Pay Info Alert */
+.pay-info {
+  background-color: rgba(66, 153, 225, 0.1);
+  border-color: rgba(66, 153, 225, 0.3);
+  color: var(--info-color);
+  border-radius: var(--border-radius);
+}
+
+.pay-info .alert-icon {
+  margin-right: 0.5rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .payslips-page {
+    padding: 1rem 0;
+  }
+  
+  .payslip-summary .row {
+    text-align: center;
+  }
+  
+  .payslip-summary .col-sm-4,
+  .payslip-summary .col-sm-3,
+  .payslip-summary .col-sm-2 {
+    margin-bottom: 1rem;
+  }
+  
+  .payslip-body {
+    padding: 1rem;
+  }
+  
+  .net-amount {
+    font-size: 2rem;
+  }
+  
+  .net-pay-card .card-body {
+    padding: 1.5rem;
+  }
+  
+  .earnings-table td,
+  .deductions-table td {
+    padding: 0.5rem;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .payslip-accordion-item .accordion-button {
+    padding: 1rem;
+  }
+  
+  .pay-period h5 {
+    font-size: 1rem;
+  }
+  
+  .net-pay .amount {
+    font-size: 1rem;
+  }
+  
+  .net-amount {
+    font-size: 1.8rem;
+  }
+}

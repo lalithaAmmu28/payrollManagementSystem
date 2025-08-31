@@ -7,6 +7,11 @@ import LoginPage from '../pages/LoginPage';
 import AdminDashboard from '../pages/admin/AdminDashboard';
 import EmployeeDashboard from '../pages/employee/EmployeeDashboard';
 
+// Import employee pages
+import ProfilePage from '../pages/employee/ProfilePage';
+import LeaveRequestPage from '../pages/employee/LeaveRequestPage';
+import PayslipsPage from '../pages/employee/PayslipsPage';
+
 // Import layout components
 import AdminLayout from '../layouts/AdminLayout';
 import EmployeeLayout from '../layouts/EmployeeLayout';
@@ -141,7 +146,7 @@ const AppRoutes = () => {
           path="dashboard"
           element={
             <EmployeeRoute>
-              <EmployeeLayout pageTitle="My Dashboard">
+              <EmployeeLayout>
                 <EmployeeDashboard />
               </EmployeeLayout>
             </EmployeeRoute>
@@ -153,11 +158,8 @@ const AppRoutes = () => {
           path="profile"
           element={
             <EmployeeRoute>
-              <EmployeeLayout pageTitle="My Profile">
-                <div className="content-card fade-in">
-                  <h1>My Profile</h1>
-                  <p className="text-muted-custom">Profile management module coming soon...</p>
-                </div>
+              <EmployeeLayout>
+                <ProfilePage />
               </EmployeeLayout>
             </EmployeeRoute>
           }
@@ -165,14 +167,11 @@ const AppRoutes = () => {
         
         {/* Leave Requests */}
         <Route
-          path="leaves"
+          path="leave"
           element={
             <EmployeeRoute>
-              <EmployeeLayout pageTitle="My Leave Requests">
-                <div className="content-card fade-in">
-                  <h1>My Leave Requests</h1>
-                  <p className="text-muted-custom">Leave requests module coming soon...</p>
-                </div>
+              <EmployeeLayout>
+                <LeaveRequestPage />
               </EmployeeLayout>
             </EmployeeRoute>
           }
@@ -183,10 +182,22 @@ const AppRoutes = () => {
           path="payslips"
           element={
             <EmployeeRoute>
-              <EmployeeLayout pageTitle="My Payslips">
+              <EmployeeLayout>
+                <PayslipsPage />
+              </EmployeeLayout>
+            </EmployeeRoute>
+          }
+        />
+        
+        {/* Salary Structure */}
+        <Route
+          path="salary"
+          element={
+            <EmployeeRoute>
+              <EmployeeLayout>
                 <div className="content-card fade-in">
-                  <h1>My Payslips</h1>
-                  <p className="text-muted-custom">Payslips module coming soon...</p>
+                  <h1>My Salary Structure</h1>
+                  <p className="text-muted-custom">Salary structure module coming soon...</p>
                 </div>
               </EmployeeLayout>
             </EmployeeRoute>
