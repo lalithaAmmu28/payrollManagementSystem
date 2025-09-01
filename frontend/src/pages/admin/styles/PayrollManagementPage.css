@@ -1,0 +1,54 @@
+.payroll-management-page {
+  min-height: 100vh;
+  background: var(--color-bg-primary);
+}
+
+.page-header .page-title {
+  color: var(--color-text-heading);
+  font-size: 28px;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.page-header .page-subtitle {
+  font-size: 16px;
+  color: var(--color-text-body);
+}
+
+.runs-card {
+  border: none;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  border-radius: 8px;
+}
+
+.runs-card .card-body { padding: 1.5rem; }
+
+.runs-table th {
+  background: var(--color-bg-primary);
+  border-top: none;
+  border-bottom: 2px solid var(--color-border);
+  padding: 1rem;
+  font-weight: 600;
+  color: var(--color-text-heading);
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.runs-table td { padding: 1rem; vertical-align: middle; }
+
+.runs-table tr:hover { background-color: rgba(76, 81, 191, 0.05); }
+
+.status-badge { border-radius: 14px; padding: 0.35rem 0.6rem; font-size: 12px; }
+
+.items-table th, .items-table td { padding: 0.75rem 1rem; }
+
+.skeleton-table { padding: 0.5rem; }
+
+.no-runs i { opacity: 0.3; }
+
+@media (max-width: 992px) {
+  .runs-table th, .runs-table td { padding: 0.75rem; }
+}
+
+

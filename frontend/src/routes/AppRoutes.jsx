@@ -10,6 +10,7 @@ import EmployeeManagementPage from '../pages/admin/EmployeeManagementPage';
 import OrgSettingsPage from '../pages/admin/OrgSettingsPage';
 import LeaveManagementAdminPage from '../pages/admin/LeaveManagementAdminPage';
 import ReportsPage from '../pages/admin/ReportsPage';
+import PayrollManagementPage from '../pages/admin/PayrollManagementPage';
 
 // Import employee pages
 import ProfilePage from '../pages/employee/ProfilePage';
@@ -100,10 +101,7 @@ const AppRoutes = () => {
           element={
             <AdminRoute>
               <AdminLayout pageTitle="Payroll Management">
-                <div className="content-card fade-in">
-                  <h1>Payroll Management</h1>
-                  <p className="text-muted-custom">Payroll management module coming soon...</p>
-                </div>
+                <PayrollManagementPage />
               </AdminLayout>
             </AdminRoute>
           }
