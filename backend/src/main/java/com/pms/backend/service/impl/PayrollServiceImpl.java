@@ -173,7 +173,10 @@ public class PayrollServiceImpl implements PayrollService {
         SalaryStructure salaryStructure = salaryStructureOpt.get();
         BigDecimal baseSalary = salaryStructure.getBaseSalary();
         
-        System.out.println(String.format("  Base Salary: %s", baseSalary));
+        // Convert annual CTC to monthly base salary
+        BigDecimal monthlyBaseSalary = baseSalary.divide(BigDecimal.valueOf(12), 2, RoundingMode.HALF_UP);
+        
+        System.out.println(String.format("  Annual Base Salary: %s, Monthly Base Salary: %s", baseSalary, monthlyBaseSalary));
         
         // ii. Calculate Bonus
         BigDecimal bonus = calculationHelper.calculateBonus(salaryStructure, baseSalary);
@@ -184,17 +187,17 @@ public class PayrollServiceImpl implements PayrollService {
                 employeeId, startDate, endDate, baseSalary, daysInMonth);
         System.out.println(String.format("  Loss of Pay Deduction: %s", lossOfPayDeduction));
         
-        // iv. Compute Net Salary
-        BigDecimal grossSalary = baseSalary.add(bonus);
+        // iv. Compute Net Salary using monthly base salary
+        BigDecimal grossSalary = monthlyBaseSalary.add(bonus);
         BigDecimal netSalary = grossSalary.subtract(lossOfPayDeduction);
         
         System.out.println(String.format("  Gross Salary: %s, Net Salary: %s", grossSalary, netSalary));
         
-        // v. Persist Result
+        // v. Persist Result with monthly base salary
         PayrollItem payrollItem = new PayrollItem();
         payrollItem.setRunId(payrollRun.getRunId());
         payrollItem.setEmployeeId(employeeId);
-        payrollItem.setBaseSalary(baseSalary);
+        payrollItem.setBaseSalary(monthlyBaseSalary);  // Store monthly base salary
         payrollItem.setBonus(bonus);
         payrollItem.setDeductions(lossOfPayDeduction);
         payrollItem.setNetSalary(netSalary);

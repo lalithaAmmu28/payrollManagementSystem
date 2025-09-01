@@ -35,12 +35,15 @@ public class PayrollCalculationHelper {
             return BigDecimal.ZERO;
         }
         
+        // Convert annual CTC to monthly base salary
+        BigDecimal monthlyBaseSalary = baseSalary.divide(BigDecimal.valueOf(12), 2, RoundingMode.HALF_UP);
+        
         try {
             // Check for percentage-based bonus
             if (bonusDetails.containsKey("percentage")) {
                 Object percentageObj = bonusDetails.get("percentage");
                 BigDecimal percentage = new BigDecimal(percentageObj.toString());
-                return baseSalary.multiply(percentage).divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP);
+                return monthlyBaseSalary.multiply(percentage).divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP);
             }
             
             // Check for fixed amount bonus
@@ -67,6 +70,9 @@ public class PayrollCalculationHelper {
      */
     public BigDecimal calculateLossOfPayDeduction(String employeeId, LocalDate startDate, 
                                                  LocalDate endDate, BigDecimal baseSalary, int daysInMonth) {
+        
+        // Convert annual CTC to monthly base salary
+        BigDecimal monthlyBaseSalary = baseSalary.divide(BigDecimal.valueOf(12), 2, RoundingMode.HALF_UP);
         
         // Query for approved unpaid leaves that overlap with payroll month
         List<LeaveRequest> unpaidLeaves = leaveRequestRepository.findAll().stream()
@@ -98,8 +104,8 @@ public class PayrollCalculationHelper {
             return BigDecimal.ZERO;
         }
         
-        // Calculate per-day salary and total deduction
-        BigDecimal perDaySalary = baseSalary.divide(BigDecimal.valueOf(daysInMonth), 2, RoundingMode.HALF_UP);
+        // Calculate per-day salary and total deduction using monthly base salary
+        BigDecimal perDaySalary = monthlyBaseSalary.divide(BigDecimal.valueOf(daysInMonth), 2, RoundingMode.HALF_UP);
         BigDecimal totalDeduction = perDaySalary.multiply(BigDecimal.valueOf(totalUnpaidDays));
         
         System.out.println(String.format("    Total unpaid days: %d, Per-day salary: %s, Total deduction: %s", 
