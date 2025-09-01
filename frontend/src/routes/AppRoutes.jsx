@@ -16,6 +16,7 @@ import PayrollManagementPage from '../pages/admin/PayrollManagementPage';
 import ProfilePage from '../pages/employee/ProfilePage';
 import LeaveRequestPage from '../pages/employee/LeaveRequestPage';
 import PayslipsPage from '../pages/employee/PayslipsPage';
+import SalaryStructurePage from '../pages/employee/SalaryStructurePage';
 
 // Import layout components
 import AdminLayout from '../layouts/AdminLayout';
@@ -185,10 +186,7 @@ const AppRoutes = () => {
           element={
             <EmployeeRoute>
               <EmployeeLayout>
-                <div className="content-card fade-in">
-                  <h1>My Salary Structure</h1>
-                  <p className="text-muted-custom">Salary structure module coming soon...</p>
-                </div>
+                <SalaryStructurePage />
               </EmployeeLayout>
             </EmployeeRoute>
           }
