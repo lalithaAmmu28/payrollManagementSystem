@@ -7,6 +7,9 @@ import LoginPage from '../pages/LoginPage';
 import AdminDashboard from '../pages/admin/AdminDashboard';
 import EmployeeDashboard from '../pages/employee/EmployeeDashboard';
 import EmployeeManagementPage from '../pages/admin/EmployeeManagementPage';
+import OrgSettingsPage from '../pages/admin/OrgSettingsPage';
+import LeaveManagementAdminPage from '../pages/admin/LeaveManagementAdminPage';
+import ReportsPage from '../pages/admin/ReportsPage';
 
 // Import employee pages
 import ProfilePage from '../pages/employee/ProfilePage';
@@ -67,6 +70,30 @@ const AppRoutes = () => {
           }
         />
         
+        {/* Organization Settings Routes (Admin only) */}
+        <Route
+          path="organization"
+          element={
+            <AdminRoute>
+              <AdminLayout pageTitle="Organization Settings">
+                <OrgSettingsPage />
+              </AdminLayout>
+            </AdminRoute>
+          }
+        />
+        
+        {/* Leave Management Routes (Admin only) */}
+        <Route
+          path="leave-management"
+          element={
+            <AdminRoute>
+              <AdminLayout pageTitle="Leave Management">
+                <LeaveManagementAdminPage />
+              </AdminLayout>
+            </AdminRoute>
+          }
+        />
+        
         {/* Payroll Management Routes (Admin only) */}
         <Route
           path="payroll"
@@ -82,46 +109,13 @@ const AppRoutes = () => {
           }
         />
         
-        {/* Leave Management Routes (Admin only) */}
-        <Route
-          path="leaves"
-          element={
-            <AdminRoute>
-              <AdminLayout pageTitle="Leave Management">
-                <div className="content-card fade-in">
-                  <h1>Leave Management</h1>
-                  <p className="text-muted-custom">Leave management module coming soon...</p>
-                </div>
-              </AdminLayout>
-            </AdminRoute>
-          }
-        />
-        
         {/* Reports & Analytics Routes (Admin only) */}
         <Route
           path="reports"
           element={
             <AdminRoute>
               <AdminLayout pageTitle="Reports & Analytics">
-                <div className="content-card fade-in">
-                  <h1>Reports & Analytics</h1>
-                  <p className="text-muted-custom">Reports and analytics module coming soon...</p>
-                </div>
-              </AdminLayout>
-            </AdminRoute>
-          }
-        />
-        
-        {/* Organization Setup Routes (Admin only) */}
-        <Route
-          path="organization"
-          element={
-            <AdminRoute>
-              <AdminLayout pageTitle="Organization Setup">
-                <div className="content-card fade-in">
-                  <h1>Organization Setup</h1>
-                  <p className="text-muted-custom">Organization setup module coming soon...</p>
-                </div>
+                <ReportsPage />
               </AdminLayout>
             </AdminRoute>
           }

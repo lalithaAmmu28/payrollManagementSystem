@@ -1,0 +1,395 @@
+/* Reports Page Styles */
+
+.reports-page {
+  min-height: 100vh;
+  background: var(--color-bg-primary);
+}
+
+/* Page Header */
+.page-header .page-title {
+  color: var(--color-text-heading);
+  font-size: 28px;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.page-header .page-subtitle {
+  font-size: 16px;
+  color: var(--color-text-body);
+}
+
+.date-filters .btn {
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.date-filters .btn-outline-secondary {
+  border-color: var(--color-border);
+  color: var(--color-text-body);
+}
+
+.date-filters .btn-outline-secondary:hover {
+  background: var(--color-text-body);
+  border-color: var(--color-text-body);
+  color: white;
+  transform: translateY(-1px);
+}
+
+/* Stats Cards */
+.stats-card {
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: all 0.2s ease;
+  overflow: hidden;
+}
+
+.stats-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+}
+
+.stats-card .card-body {
+  padding: 1.5rem;
+}
+
+.stats-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.stats-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  color: white;
+  margin-right: 1rem;
+}
+
+.stats-card-primary .stats-icon {
+  background: linear-gradient(135deg, #4C51BF, #6366F1);
+}
+
+.stats-card-warning .stats-icon {
+  background: linear-gradient(135deg, #F59E0B, #FBBF24);
+}
+
+.stats-card-success .stats-icon {
+  background: linear-gradient(135deg, #10B981, #34D399);
+}
+
+.stats-card-info .stats-icon {
+  background: linear-gradient(135deg, #3B82F6, #60A5FA);
+}
+
+.stats-info {
+  flex: 1;
+  text-align: right;
+}
+
+.stats-value {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--color-text-heading);
+  margin-bottom: 0.25rem;
+  line-height: 1;
+}
+
+.stats-title {
+  font-size: 14px;
+  color: var(--color-text-body);
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+.stats-change {
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* Chart Cards */
+.chart-card {
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  height: 100%;
+}
+
+.chart-card .card-header {
+  background: white;
+  border-bottom: 2px solid var(--color-border);
+  border-radius: 12px 12px 0 0;
+  padding: 1.5rem;
+}
+
+.chart-card .card-body {
+  padding: 1.5rem;
+}
+
+.chart-title {
+  color: var(--color-text-heading);
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+}
+
+.chart-subtitle {
+  font-size: 14px;
+  margin-bottom: 0;
+}
+
+/* No Data Chart State */
+.no-data-chart {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 300px;
+  text-align: center;
+}
+
+.no-data-chart i {
+  opacity: 0.3;
+}
+
+.no-data-chart p {
+  font-size: 16px;
+  margin-bottom: 0;
+}
+
+/* Quick Stats */
+.quick-stats {
+  padding: 1rem 0;
+}
+
+.stat-item {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  background: var(--color-bg-primary);
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  transition: all 0.2s ease;
+}
+
+.stat-item:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.stat-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  margin-right: 1rem;
+  background: rgba(76, 81, 191, 0.1);
+}
+
+.stat-icon.text-success {
+  background: rgba(40, 167, 69, 0.1);
+  color: var(--color-success);
+}
+
+.stat-icon.text-warning {
+  background: rgba(255, 193, 7, 0.1);
+  color: #ffc107;
+}
+
+.stat-icon.text-danger {
+  background: rgba(220, 53, 69, 0.1);
+  color: var(--color-error);
+}
+
+.stat-details h4 {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--color-text-heading);
+  margin-bottom: 0.25rem;
+}
+
+.stat-details p {
+  font-size: 14px;
+  color: var(--color-text-body);
+  margin-bottom: 0;
+  font-weight: 500;
+}
+
+/* Analytics Summary */
+.analytics-summary {
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.analytics-summary .card-header {
+  background: linear-gradient(135deg, #4C51BF, #6366F1);
+  border-radius: 12px 12px 0 0;
+  border: none;
+  padding: 1.5rem;
+}
+
+.analytics-summary .chart-title {
+  color: white;
+  margin-bottom: 0;
+}
+
+.analytics-summary .card-body {
+  padding: 1.5rem;
+}
+
+.analytics-summary .alert {
+  border: none;
+  border-radius: 8px;
+  background: rgba(76, 81, 191, 0.1);
+  color: var(--color-text-heading);
+  border-left: 4px solid var(--color-accent);
+}
+
+/* Chart Customizations */
+.recharts-tooltip-wrapper {
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.recharts-legend-wrapper {
+  padding-top: 1rem;
+}
+
+.recharts-cartesian-axis-tick-value {
+  font-size: 12px;
+  fill: var(--color-text-body);
+}
+
+.recharts-label {
+  fill: var(--color-text-heading);
+  font-weight: 500;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .stats-content {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .stats-icon {
+    margin-right: 0;
+    margin-bottom: 1rem;
+  }
+
+  .stats-info {
+    text-align: center;
+  }
+
+  .stats-value {
+    font-size: 24px;
+  }
+
+  .chart-card .card-header {
+    padding: 1rem;
+  }
+
+  .chart-card .card-body {
+    padding: 1rem;
+  }
+
+  .chart-title {
+    font-size: 16px;
+  }
+
+  .stat-item {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .stat-icon {
+    margin-right: 0;
+    margin-bottom: 0.5rem;
+  }
+
+  .stat-details h4 {
+    font-size: 20px;
+  }
+}
+
+@media (max-width: 992px) {
+  .chart-card {
+    margin-bottom: 2rem;
+  }
+
+  .stats-card {
+    margin-bottom: 1rem;
+  }
+}
+
+/* Loading States */
+.chart-card .skeleton-loader {
+  margin: 1rem 0;
+}
+
+/* Animation for cards */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.stats-card,
+.chart-card,
+.analytics-summary {
+  animation: fadeInUp 0.3s ease;
+}
+
+/* Chart Container Styling */
+.recharts-responsive-container {
+  margin: 0.5rem 0;
+}
+
+/* Custom Tooltip Styling */
+.recharts-tooltip-content {
+  background: white !important;
+  border: none !important;
+  border-radius: 8px !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+  padding: 12px !important;
+}
+
+.recharts-tooltip-label {
+  color: var(--color-text-heading) !important;
+  font-weight: 600 !important;
+  margin-bottom: 4px !important;
+}
+
+.recharts-tooltip-item {
+  color: var(--color-text-body) !important;
+  font-weight: 500 !important;
+}
+
+/* Performance Insights Styling */
+.analytics-summary .row > div {
+  padding: 0.5rem;
+}
+
+.analytics-summary .row > div strong {
+  display: block;
+  margin-bottom: 0.25rem;
+  color: var(--color-accent);
+}

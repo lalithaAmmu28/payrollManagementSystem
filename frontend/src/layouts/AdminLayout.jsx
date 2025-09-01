@@ -55,30 +55,20 @@ const AdminLayout = ({ children }) => {
             <li className="nav-item">
               <button 
                 className="nav-link"
-                onClick={() => handleNavigation('/admin/departments')}
+                onClick={() => handleNavigation('/admin/organization')}
               >
-                <i className="fas fa-building nav-icon"></i>
-                <span className="nav-label">Departments</span>
+                <i className="fas fa-cogs nav-icon"></i>
+                <span className="nav-label">Organization</span>
               </button>
             </li>
             
             <li className="nav-item">
               <button 
                 className="nav-link"
-                onClick={() => handleNavigation('/admin/job-roles')}
+                onClick={() => handleNavigation('/admin/leave-management')}
               >
-                <i className="fas fa-briefcase nav-icon"></i>
-                <span className="nav-label">Job Roles</span>
-              </button>
-            </li>
-            
-            <li className="nav-item">
-              <button 
-                className="nav-link"
-                onClick={() => handleNavigation('/admin/leave-requests')}
-              >
-                <i className="fas fa-calendar-alt nav-icon"></i>
-                <span className="nav-label">Leave Requests</span>
+                <i className="fas fa-calendar-check nav-icon"></i>
+                <span className="nav-label">Leave Management</span>
               </button>
             </li>
             
