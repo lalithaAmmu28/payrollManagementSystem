@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Card, Button, Form, Alert, Badge } from 'react-bootstrap';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, LineChart, Line, PieChart, Pie, Cell } from 'recharts';
-import apiService from '../../api/apiService';
+import { reportsAPI } from '../../api/apiService';
 import { useToast } from '../../components/common/ToastNotification';
 import { LoadingSpinner, SkeletonLoader } from '../../components/common';
 import './styles/ReportsPage.css';
@@ -9,46 +9,69 @@ import './styles/ReportsPage.css';
 const ReportsPage = () => {
   const { showToast } = useToast();
   const [loading, setLoading] = useState(true);
-  const [dateRange, setDateRange] = useState({
-    startDate: new Date(new Date().getFullYear(), 0, 1).toISOString().split('T')[0], // Start of current year
-    endDate: new Date().toISOString().split('T')[0] // Today
-  });
+  const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
+  const [selectedMonth, setSelectedMonth] = useState('');
   
-  // Dashboard data states
+  // Data states
   const [dashboardData, setDashboardData] = useState(null);
   const [departmentCosts, setDepartmentCosts] = useState([]);
-  const [leaveUsageTrends, setLeaveUsageTrends] = useState([]);
+  const [topSpendingDepartments, setTopSpendingDepartments] = useState([]);
+  const [monthlyLeaveStats, setMonthlyLeaveStats] = useState([]);
+  const [topLeaveTakers, setTopLeaveTakers] = useState([]);
   const [payrollSummary, setPayrollSummary] = useState([]);
-  const [overallStats, setOverallStats] = useState(null);
 
   useEffect(() => {
-    fetchReportsData();
-  }, [dateRange]);
+    fetchAllReportsData();
+  }, [selectedYear, selectedMonth]);
 
-  const fetchReportsData = async () => {
+  const fetchAllReportsData = async () => {
     try {
       setLoading(true);
       
-      // Fetch all reports data in parallel
-      const [
-        dashboardResponse,
-        departmentCostResponse,
-        leaveTrendsResponse,
-        payrollSummaryResponse,
-        overallStatsResponse
-      ] = await Promise.all([
-        apiService.get('/reports/analytics/dashboard'),
-        apiService.get('/reports/department-cost'),
-        apiService.get('/reports/leave-trends'),
-        apiService.get('/reports/payroll-summary'),
-        apiService.get('/reports/leave-trends/overall')
-      ]);
-
+      // 1. Fetch analytics dashboard (requires year parameter)
+      const dashboardResponse = await reportsAPI.getAnalyticsDashboard({ year: selectedYear });
+      console.log('Dashboard Response:', dashboardResponse.data);
       setDashboardData(dashboardResponse.data.data);
-      setDepartmentCosts(departmentCostResponse.data.data);
-      setLeaveUsageTrends(leaveTrendsResponse.data.data);
-      setPayrollSummary(payrollSummaryResponse.data.data);
-      setOverallStats(overallStatsResponse.data.data);
+      
+      // 2. Fetch department costs (supports year and month)
+      const departmentParams = { year: selectedYear };
+      if (selectedMonth) {
+        departmentParams.month = parseInt(selectedMonth);
+      }
+      const departmentResponse = await reportsAPI.getDepartmentCosts(departmentParams);
+      console.log('Department Costs Response:', departmentResponse.data);
+      console.log('Department Costs Data:', departmentResponse.data.data);
+      setDepartmentCosts(departmentResponse.data.data || []);
+      
+      // 3. Fetch top spending departments (requires year parameter)
+      const topSpendingResponse = await reportsAPI.getTopSpendingDepartments({ 
+        year: selectedYear, 
+        limit: 10 
+      });
+      console.log('Top Spending Response:', topSpendingResponse.data);
+      console.log('Top Spending Data:', topSpendingResponse.data.data);
+      setTopSpendingDepartments(topSpendingResponse.data.data || []);
+      
+      // 4. Fetch monthly leave statistics (requires year parameter)
+      const monthlyLeaveResponse = await reportsAPI.getMonthlyLeaveStats({ year: selectedYear });
+      console.log('Monthly Leave Response:', monthlyLeaveResponse.data);
+      setMonthlyLeaveStats(monthlyLeaveResponse.data.data || []);
+      
+      // 5. Fetch top leave takers (requires year parameter)
+      const topLeaveResponse = await reportsAPI.getTopLeaveTakers({ 
+        year: selectedYear, 
+        limit: 10 
+      });
+      console.log('Top Leave Takers Response:', topLeaveResponse.data);
+      setTopLeaveTakers(topLeaveResponse.data.data || []);
+      
+      // 6. Fetch payroll summary (requires startYear and endYear)
+      const payrollResponse = await reportsAPI.getPayrollSummary({ 
+        startYear: selectedYear, 
+        endYear: selectedYear 
+      });
+      console.log('Payroll Summary Response:', payrollResponse.data);
+      setPayrollSummary(payrollResponse.data.data || []);
       
     } catch (error) {
       showToast('Failed to fetch reports data', 'error');
@@ -59,12 +82,15 @@ const ReportsPage = () => {
   };
 
   const formatCurrency = (amount) => {
+    if (amount === null || amount === undefined || isNaN(amount)) {
+      return '₹0';
+    }
     return new Intl.NumberFormat('en-IN', {
       style: 'currency',
-      currency: 'USD',
+      currency: 'INR',
       minimumFractionDigits: 0,
       maximumFractionDigits: 0,
-    }).format(amount);
+    }).format(Number(amount));
   };
 
   const COLORS = ['#4C51BF', '#38A169', '#E53E3E', '#D69E2E', '#805AD5', '#DD6B20'];
@@ -73,8 +99,8 @@ const ReportsPage = () => {
     if (loading || !dashboardData) {
       return (
         <Row className="mb-4">
-          {[...Array(4)].map((_, index) => (
-            <Col key={index} lg={3} md={6} className="mb-3">
+          {[...Array(3)].map((_, index) => (
+            <Col key={index} lg={4} md={6} className="mb-3">
               <Card className="stats-card">
                 <Card.Body>
                   <SkeletonLoader height="80px" />
@@ -86,31 +112,27 @@ const ReportsPage = () => {
       );
     }
 
+    const summaryMetrics = dashboardData.summaryMetrics || {};
+    const overallLeave = dashboardData.overallLeaveStatistics || [];
+    
     const stats = [
       {
         title: 'Total Employees',
-        value: dashboardData.totalEmployees || 0,
+        value: summaryMetrics.totalEmployeesInPayroll || 0,
         icon: 'fas fa-users',
         color: 'primary',
         change: '+5%'
       },
       {
         title: 'Active Leave Requests',
-        value: dashboardData.activeLeaveRequests || 0,
+        value: overallLeave[0] || 0, // Total leave requests
         icon: 'fas fa-calendar-alt',
         color: 'warning',
         change: '+12%'
       },
       {
-        title: 'Monthly Payroll',
-        value: formatCurrency(dashboardData.monthlyPayroll || 0),
-        icon: 'fas fa-dollar-sign',
-        color: 'success',
-        change: '+8%'
-      },
-      {
-        title: 'Departments',
-        value: dashboardData.totalDepartments || 0,
+        title: 'Total Departments',
+        value: summaryMetrics.totalDepartments || 0,
         icon: 'fas fa-building',
         color: 'info',
         change: '0%'
@@ -120,7 +142,7 @@ const ReportsPage = () => {
     return (
       <Row className="mb-4">
         {stats.map((stat, index) => (
-          <Col key={index} lg={3} md={6} className="mb-3">
+          <Col key={index} lg={4} md={6} className="mb-3">
             <Card className={`stats-card stats-card-${stat.color}`}>
               <Card.Body>
                 <div className="stats-content">
@@ -152,14 +174,22 @@ const ReportsPage = () => {
       return (
         <div className="no-data-chart">
           <i className="fas fa-chart-bar fa-3x text-muted mb-3"></i>
-          <p className="text-muted">No department cost data available</p>
+          <p className="text-muted">No department cost data available for {selectedYear}</p>
         </div>
       );
     }
 
+    // Transform the data to calculate total cost for each department
+    const chartData = departmentCosts.map(dept => ({
+      ...dept,
+      totalCost: Number(dept.totalNetSalary || 0) // Use totalNetSalary as it's the final amount paid
+    }));
+
+    console.log('Transformed chart data:', chartData);
+
     return (
       <ResponsiveContainer width="100%" height={300}>
-        <BarChart data={departmentCosts}>
+        <BarChart data={chartData}>
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="departmentName" />
           <YAxis tickFormatter={(value) => formatCurrency(value)} />
@@ -174,31 +204,45 @@ const ReportsPage = () => {
     );
   };
 
-  const renderLeaveUsageChart = () => {
+  const renderMonthlyLeaveChart = () => {
     if (loading) {
       return <SkeletonLoader height="300px" />;
     }
 
-    if (!leaveUsageTrends.length) {
+    if (!monthlyLeaveStats.length) {
       return (
         <div className="no-data-chart">
           <i className="fas fa-chart-line fa-3x text-muted mb-3"></i>
-          <p className="text-muted">No leave usage data available</p>
+          <p className="text-muted">No leave usage data available for {selectedYear}</p>
         </div>
       );
     }
 
+    // Transform the monthly leave statistics data for the chart
+    const chartData = monthlyLeaveStats.map((item, index) => {
+      const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 
+                         'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+      return {
+        month: monthNames[index] || `Month ${index + 1}`,
+        totalRequests: item[0] || 0, // Total requests in that month
+        approved: item[1] || 0, // Approved requests
+        pending: item[2] || 0, // Pending requests
+        rejected: item[3] || 0 // Rejected requests
+      };
+    });
+
     return (
       <ResponsiveContainer width="100%" height={300}>
-        <LineChart data={leaveUsageTrends}>
+        <LineChart data={chartData}>
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="month" />
           <YAxis />
           <Tooltip />
           <Legend />
-          <Line type="monotone" dataKey="totalLeaves" stroke="#38A169" strokeWidth={2} name="Total Leaves" />
-          <Line type="monotone" dataKey="approvedLeaves" stroke="#4C51BF" strokeWidth={2} name="Approved" />
-          <Line type="monotone" dataKey="rejectedLeaves" stroke="#E53E3E" strokeWidth={2} name="Rejected" />
+          <Line type="monotone" dataKey="totalRequests" stroke="#4C51BF" strokeWidth={2} name="Total Requests" />
+          <Line type="monotone" dataKey="approved" stroke="#38A169" strokeWidth={2} name="Approved" />
+          <Line type="monotone" dataKey="pending" stroke="#D69E2E" strokeWidth={2} name="Pending" />
+          <Line type="monotone" dataKey="rejected" stroke="#E53E3E" strokeWidth={2} name="Rejected" />
         </LineChart>
       </ResponsiveContainer>
     );
@@ -209,11 +253,34 @@ const ReportsPage = () => {
       return <SkeletonLoader height="300px" />;
     }
 
+    console.log('Payroll Summary data for chart:', payrollSummary);
+
     if (!payrollSummary.length) {
       return (
         <div className="no-data-chart">
           <i className="fas fa-chart-pie fa-3x text-muted mb-3"></i>
-          <p className="text-muted">No payroll summary data available</p>
+          <p className="text-muted">No payroll summary data available for {selectedYear}</p>
+        </div>
+      );
+    }
+
+    // Use the first payroll summary item for the pie chart
+    const summaryData = payrollSummary[0] || {};
+    console.log('Summary data for chart:', summaryData);
+    
+    const chartData = [
+      { name: 'Base Salary', value: Number(summaryData.totalBaseSalary || 0) },
+      { name: 'Bonuses', value: Number(summaryData.totalBonus || 0) },
+      { name: 'Deductions', value: Number(summaryData.totalDeductions || 0) }
+    ].filter(item => item.value > 0);
+
+    console.log('Chart data after transformation:', chartData);
+
+    if (chartData.length === 0) {
+      return (
+        <div className="no-data-chart">
+          <i className="fas fa-chart-pie fa-3x text-muted mb-3"></i>
+          <p className="text-muted">No payroll data available for {selectedYear}</p>
         </div>
       );
     }
@@ -222,16 +289,16 @@ const ReportsPage = () => {
       <ResponsiveContainer width="100%" height={300}>
         <PieChart>
           <Pie
-            data={payrollSummary}
+            data={chartData}
             cx="50%"
             cy="50%"
             labelLine={false}
             label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
             outerRadius={80}
             fill="#8884d8"
-            dataKey="totalAmount"
+            dataKey="value"
           >
-            {payrollSummary.map((entry, index) => (
+            {chartData.map((entry, index) => (
               <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
             ))}
           </Pie>
@@ -241,48 +308,30 @@ const ReportsPage = () => {
     );
   };
 
-  const renderQuickStats = () => {
-    if (loading || !overallStats) {
+  const renderTopSpendingDepartments = () => {
+    if (loading || !topSpendingDepartments.length) {
       return <SkeletonLoader height="150px" />;
     }
 
     return (
-      <div className="quick-stats">
-        <div className="row">
-          <div className="col-md-4">
-            <div className="stat-item">
-              <div className="stat-icon text-success">
-                <i className="fas fa-check-circle"></i>
+      <div className="top-departments">
+        {topSpendingDepartments.slice(0, 5).map((dept, index) => {
+          // Use totalNetSalary as the total cost (matches backend sorting logic)
+          const totalCost = Number(dept.totalNetSalary || 0);
+          console.log(`Dept ${dept.departmentName}: netSalary=${dept.totalNetSalary}, total=${totalCost}`);
+          
+          return (
+            <div key={index} className="department-item d-flex justify-content-between align-items-center mb-2 p-2 bg-light rounded">
+              <div>
+                <strong>{dept.departmentName}</strong>
+                <div className="text-muted small">{dept.employeeCount} employees</div>
               </div>
-              <div className="stat-details">
-                <h4>{overallStats.totalApprovedLeaves || 0}</h4>
-                <p>Approved Leaves</p>
-              </div>
-            </div>
-          </div>
-          <div className="col-md-4">
-            <div className="stat-item">
-              <div className="stat-icon text-warning">
-                <i className="fas fa-clock"></i>
-              </div>
-              <div className="stat-details">
-                <h4>{overallStats.totalPendingLeaves || 0}</h4>
-                <p>Pending Leaves</p>
+              <div className="text-end">
+                <div className="h6 mb-0">{formatCurrency(totalCost)}</div>
               </div>
             </div>
-          </div>
-          <div className="col-md-4">
-            <div className="stat-item">
-              <div className="stat-icon text-danger">
-                <i className="fas fa-times-circle"></i>
-              </div>
-              <div className="stat-details">
-                <h4>{overallStats.totalRejectedLeaves || 0}</h4>
-                <p>Rejected Leaves</p>
-              </div>
-            </div>
-          </div>
-        </div>
+          );
+        })}
       </div>
     );
   };
@@ -295,20 +344,46 @@ const ReportsPage = () => {
             <div>
               <h1 className="page-title">Reports & Analytics</h1>
               <p className="page-subtitle text-muted">
-                Comprehensive insights into your organization's performance
+                Comprehensive insights into your organization's performance for {selectedYear}
               </p>
             </div>
-            <div className="date-filters">
-              <Button
-                variant="outline-secondary"
-                size="sm"
-                onClick={fetchReportsData}
-                disabled={loading}
-                className="me-2"
-              >
-                <i className="fas fa-sync-alt me-2"></i>
-                Refresh
-              </Button>
+            <div className="controls-section d-flex align-items-center">
+              <Form.Group className="me-3 mb-0">
+                <Form.Label className="small text-muted mb-1">Select Year</Form.Label>
+                <Form.Select 
+                  value={selectedYear} 
+                  onChange={(e) => setSelectedYear(parseInt(e.target.value))}
+                  style={{ width: '120px' }}
+                >
+                  {Array.from({ length: 5 }, (_, i) => {
+                    const year = new Date().getFullYear() - i;
+                    return (
+                      <option key={year} value={year}>
+                        {year}
+                      </option>
+                    );
+                  })}
+                </Form.Select>
+              </Form.Group>
+              <Form.Group className="me-3 mb-0">
+                <Form.Label className="small text-muted mb-1">Select Month (Optional)</Form.Label>
+                <Form.Select 
+                  value={selectedMonth} 
+                  onChange={(e) => setSelectedMonth(e.target.value)}
+                  style={{ width: '140px' }}
+                >
+                  <option value="">All Months</option>
+                  {Array.from({ length: 12 }, (_, i) => {
+                    const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
+                                      'July', 'August', 'September', 'October', 'November', 'December'];
+                    return (
+                      <option key={i + 1} value={i + 1}>
+                        {monthNames[i]}
+                      </option>
+                    );
+                  })}
+                </Form.Select>
+              </Form.Group>
             </div>
           </div>
         </div>
@@ -327,7 +402,7 @@ const ReportsPage = () => {
                   Department Costs
                 </h5>
                 <p className="chart-subtitle text-muted">
-                  Total payroll costs by department
+                  Total payroll costs by department {selectedMonth && `for month ${selectedMonth}`}
                 </p>
               </Card.Header>
               <Card.Body>
@@ -336,20 +411,20 @@ const ReportsPage = () => {
             </Card>
           </Col>
 
-          {/* Leave Usage Trends */}
+          {/* Monthly Leave Statistics */}
           <Col lg={6} className="mb-4">
             <Card className="chart-card">
               <Card.Header>
                 <h5 className="chart-title">
                   <i className="fas fa-chart-line me-2"></i>
-                  Leave Usage Trends
+                  Monthly Leave Statistics
                 </h5>
                 <p className="chart-subtitle text-muted">
-                  Monthly leave application trends
+                  Leave request trends throughout {selectedYear}
                 </p>
               </Card.Header>
               <Card.Body>
-                {renderLeaveUsageChart()}
+                {renderMonthlyLeaveChart()}
               </Card.Body>
             </Card>
           </Col>
@@ -365,7 +440,7 @@ const ReportsPage = () => {
                   Payroll Distribution
                 </h5>
                 <p className="chart-subtitle text-muted">
-                  Payroll distribution across months
+                  Payroll breakdown for {selectedYear}
                 </p>
               </Card.Header>
               <Card.Body>
@@ -374,49 +449,20 @@ const ReportsPage = () => {
             </Card>
           </Col>
 
-          {/* Quick Stats */}
+          {/* Top Spending Departments */}
           <Col lg={4} className="mb-4">
             <Card className="chart-card">
               <Card.Header>
                 <h5 className="chart-title">
-                  <i className="fas fa-tachometer-alt me-2"></i>
-                  Leave Overview
+                  <i className="fas fa-trophy me-2"></i>
+                  Top Spending Departments
                 </h5>
                 <p className="chart-subtitle text-muted">
-                  Current leave statistics
+                  Highest payroll costs for {selectedYear}
                 </p>
               </Card.Header>
               <Card.Body>
-                {renderQuickStats()}
-              </Card.Body>
-            </Card>
-          </Col>
-        </Row>
-
-        {/* Additional Analytics */}
-        <Row>
-          <Col lg={12}>
-            <Card className="analytics-summary">
-              <Card.Header>
-                <h5 className="chart-title">
-                  <i className="fas fa-analytics me-2"></i>
-                  Performance Insights
-                </h5>
-              </Card.Header>
-              <Card.Body>
-                <Alert variant="info" className="mb-0">
-                  <div className="row">
-                    <div className="col-md-4">
-                      <strong>🎯 Key Finding:</strong> Department costs are well-distributed across the organization.
-                    </div>
-                    <div className="col-md-4">
-                      <strong>📈 Trend:</strong> Leave usage patterns show seasonal variations.
-                    </div>
-                    <div className="col-md-4">
-                      <strong>💡 Recommendation:</strong> Consider implementing automated approval workflows.
-                    </div>
-                  </div>
-                </Alert>
+                {renderTopSpendingDepartments()}
               </Card.Body>
             </Card>
           </Col>

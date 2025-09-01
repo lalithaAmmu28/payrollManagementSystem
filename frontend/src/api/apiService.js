@@ -23,7 +23,7 @@ apiService.interceptors.request.use(
     }
     
     // Log request for debugging (remove in production)
-    console.log(`API Request: ${config.method?.toUpperCase()} ${config.url}`);
+   // console.log(`API Request: ${config.method?.toUpperCase()} ${config.url}`);
     
     return config;
   },
