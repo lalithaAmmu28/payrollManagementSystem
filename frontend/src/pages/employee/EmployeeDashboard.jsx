@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Row, Col, Card, Button, Alert, Badge } from 'react-bootstrap';
+import { Container, Row, Col, Card, Button, Badge } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { useToast } from '../../components/common/ToastNotification';
@@ -316,19 +316,7 @@ const EmployeeDashboard = () => {
         </Col>
       </Row>
 
-      {/* Help Section */}
-      <Row>
-        <Col>
-          <Alert variant="info" className="help-alert">
-            <div className="d-flex align-items-center">
-              <i className="fas fa-info-circle me-3"></i>
-              <div>
-                <strong>Need help?</strong> Contact HR at hr@company.com or call (555) 123-4567 for any questions about your account, payroll, or leave policies.
-              </div>
-            </div>
-          </Alert>
-        </Col>
-      </Row>
+      
     </Container>
   );
 };

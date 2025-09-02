@@ -218,27 +218,16 @@ const LoginPage = () => {
                   )}
                 </Formik>
 
-                {/* Demo Credentials Info */}
-                <div className="mt-4 pt-3 border-top">
-                  <small className="text-muted-custom">
-                    <strong>Demo Credentials:</strong><br/>
-                    <span className="d-block mt-1">
-                      Admin: <code>admin / password</code>
-                    </span>
-                    <span className="d-block">
-                      Employee: <code>employee / password</code>
-                    </span>
-                  </small>
-                </div>
+                {/* Removed demo credentials section */}
               </Card.Body>
             </Card>
 
             {/* Footer */}
-            <div className="text-center mt-4">
+            {/* <div className="text-center mt-4">
               <small className="text-muted-custom">
                 © 2024 Payroll Management System. All rights reserved.
               </small>
-            </div>
+            </div> */}
           </Col>
         </Row>
       </Container>

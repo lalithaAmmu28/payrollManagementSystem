@@ -120,22 +120,19 @@ const ReportsPage = () => {
         title: 'Total Employees',
         value: summaryMetrics.totalEmployeesInPayroll || 0,
         icon: 'fas fa-users',
-        color: 'primary',
-        change: '+5%'
+        color: 'primary'
       },
       {
         title: 'Active Leave Requests',
         value: overallLeave[0] || 0, // Total leave requests
         icon: 'fas fa-calendar-alt',
-        color: 'warning',
-        change: '+12%'
+        color: 'warning'
       },
       {
         title: 'Total Departments',
         value: summaryMetrics.totalDepartments || 0,
         icon: 'fas fa-building',
-        color: 'info',
-        change: '0%'
+        color: 'info'
       }
     ];
 
@@ -152,9 +149,6 @@ const ReportsPage = () => {
                   <div className="stats-info">
                     <h3 className="stats-value">{stat.value}</h3>
                     <p className="stats-title">{stat.title}</p>
-                    <Badge bg="light" text="dark" className="stats-change">
-                      {stat.change}
-                    </Badge>
                   </div>
                 </div>
               </Card.Body>
@@ -340,14 +334,14 @@ const ReportsPage = () => {
     <div className="reports-page">
       <Container fluid>
         <div className="page-header">
-          <div className="d-flex justify-content-between align-items-center mb-4">
-            <div>
+          <div className="d-flex justify-content-between align-items-center mb-4 header-flex-container">
+            <div className="flex-grow-1">
               <h1 className="page-title">Reports & Analytics</h1>
               <p className="page-subtitle text-muted">
                 Comprehensive insights into your organization's performance for {selectedYear}
               </p>
             </div>
-            <div className="controls-section d-flex align-items-center">
+            <div className="controls-section d-flex align-items-center flex-shrink-0">
               <Form.Group className="me-3 mb-0">
                 <Form.Label className="small text-muted mb-1">Select Year</Form.Label>
                 <Form.Select 

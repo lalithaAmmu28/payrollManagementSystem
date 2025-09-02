@@ -21,7 +21,7 @@ const monthOptions = [
   { value: 8, label: 'August' },
   { value: 9, label: 'September' },
   { value: 10, label: 'October' },
-  { value: 11, label: 'November' },
+  { value: 11, 'label': 'November' },
   { value: 12, label: 'December' },
 ];
 
@@ -61,8 +61,6 @@ const formatCurrency = (amount) => {
 };
 
 const resolveMonthlyBasePay = (item) => {
-  // Do NOT confuse annual/base structure with monthly base
-  // Prefer explicit monthly fields when present
   const candidates = [
     item.monthlyBaseSalary,
     item.monthlyBasePay,
@@ -108,30 +106,21 @@ const PayrollManagementPage = () => {
   const [runItems, setRunItems] = useState([]);
 
   useEffect(() => {
-    fetchRuns(true);
+    fetchRuns();
   }, []);
 
-  const fetchRuns = async (showLoadingSpinner = false) => {
+  const fetchRuns = async () => {
     try {
-      if (showLoadingSpinner) {
-        setLoading(true);
-      }
-      
-      // Force fresh data from server with cache busting
+      setLoading(true);
       const timestamp = Date.now();
-      const res = await apiService.get('/payroll/runs', { 
+      const res = await apiService.get('/payroll/runs', {
         params: { _t: timestamp },
         headers: {
           'Cache-Control': 'no-cache',
           'Pragma': 'no-cache'
         }
       });
-      
-      console.log('Fetched runs:', res.data);
-      
       const data = Array.isArray(res.data?.data) ? res.data.data : [];
-      
-      // Sort latest first
       data.sort((a, b) => {
         const ay = a.runYear ?? a.year ?? 0;
         const by = b.runYear ?? b.year ?? 0;
@@ -143,17 +132,12 @@ const PayrollManagementPage = () => {
         const bt = new Date(b.createdAt || 0).getTime();
         return bt - at;
       });
-      
-      console.log('Setting runs to:', data);
-      setRuns([...data]); // Force new array reference for React re-render
-      
+      setRuns(data);
     } catch (e) {
       console.error('Error fetching runs:', e);
       showToast(e.message || 'Failed to load payroll runs', 'error');
     } finally {
-      if (showLoadingSpinner) {
-        setLoading(false);
-      }
+      setLoading(false);
     }
   };
 
@@ -174,18 +158,37 @@ const PayrollManagementPage = () => {
   const handleCreateRun = async (values, { setSubmitting, resetForm }) => {
     try {
       setCreating(true);
-      console.log('Creating payroll run:', { year: values.year, month: values.month });
-      
       const response = await payrollAPI.createRun({ year: values.year, month: values.month });
-      console.log('Create response:', response.data);
-      
+      const newRun = response.data?.data;
+
+      // --- FIX START ---
+      // Manually add the new run to the state for an instant UI update.
+      if (newRun) {
+        setRuns(prevRuns => {
+          const updatedRuns = [newRun, ...prevRuns];
+          updatedRuns.sort((a, b) => {
+            const ay = a.runYear ?? a.year ?? 0;
+            const by = b.runYear ?? b.year ?? 0;
+            const am = a.runMonth ?? a.month ?? 0;
+            const bm = b.runMonth ?? b.month ?? 0;
+            if (by !== ay) return by - ay;
+            if (bm !== am) return bm - am;
+            const at = new Date(a.createdAt || 0).getTime();
+            const bt = new Date(b.createdAt || 0).getTime();
+            return bt - at;
+          });
+          return updatedRuns;
+        });
+      } else {
+        // Fallback to refetch if the API doesn't return the new object
+        await fetchRuns();
+      }
+      // --- FIX END ---
+
       setShowCreateModal(false);
       resetForm();
       showToast('Payroll run created', 'success');
-      
-      // Force immediate refresh without delay
-      await fetchRuns();
-      
+
     } catch (e) {
       console.error('Create run error:', e);
       showToast(e.message || 'Failed to create payroll run', 'error');
@@ -198,24 +201,29 @@ const PayrollManagementPage = () => {
   const handleProcess = async (runId) => {
     try {
       setProcessingRunId(runId);
-      console.log('Processing payroll run:', runId);
-      
       const response = await payrollAPI.processRun(runId);
-      console.log('Process response:', response.data);
-      
+      const updatedRunData = response.data?.data;
+
+      // --- FIX START ---
+      // Optimistically update the run's status in the local state.
+      setRuns(prevRuns =>
+        prevRuns.map(run =>
+          (run.runId || run.id) === runId
+            ? { ...run, status: 'PROCESSED', processedAt: updatedRunData?.processedAt || new Date().toISOString() }
+            : run
+        )
+      );
+      // --- FIX END ---
+
       showToast('Payroll processed successfully', 'success');
-      
-      // Force immediate refresh without delay
-      await fetchRuns();
-      
-      // If items modal is open for this run, refresh items too
+
       if (itemsRunId === runId) {
         await openItemsModal(runId);
       }
-      
     } catch (e) {
       console.error('Process run error:', e);
       showToast(e.message || 'Failed to process payroll', 'error');
+      await fetchRuns(); // Refetch on error to sync state
     } finally {
       setProcessingRunId(null);
     }
@@ -223,32 +231,36 @@ const PayrollManagementPage = () => {
 
   const handleLock = async () => {
     if (!lockingRun) return;
-    
     const runIdToLock = lockingRun.id;
-    
+
     try {
       setLockingInProgress(true);
-      console.log('Locking payroll run:', runIdToLock);
-      
       const response = await payrollAPI.lockRun(runIdToLock);
-      console.log('Lock response:', response.data);
+      const updatedRunData = response.data?.data;
       
+      // --- FIX START ---
+      // Optimistically update the run's status in the local state.
+      setRuns(prevRuns =>
+        prevRuns.map(run =>
+          (run.runId || run.id) === runIdToLock
+            ? { ...run, status: 'LOCKED', lockedAt: updatedRunData?.lockedAt || new Date().toISOString() }
+            : run
+        )
+      );
+      // --- FIX END ---
+
       showToast('Payroll run locked', 'success');
-      
-      // Force immediate refresh without delay
-      await fetchRuns();
-      
-      // If items modal is open for this run, refresh items too
+
       if (itemsRunId === runIdToLock) {
         await openItemsModal(runIdToLock);
       }
-      
     } catch (e) {
       console.error('Lock run error:', e);
       showToast(e.message || 'Failed to lock payroll run', 'error');
+      await fetchRuns(); // Refetch on error to sync state
     } finally {
       setLockingInProgress(false);
-      setLockingRun(null); // Close modal after everything is done
+      setLockingRun(null);
     }
   };
 
@@ -291,7 +303,7 @@ const PayrollManagementPage = () => {
                       value={values.month}
                       onChange={handleChange}
                       onBlur={handleBlur}
-                      isInvalid={touched.month && !!errors.month}
+      isInvalid={touched.month && !!errors.month}
                     >
                       {monthOptions.map((m) => (
                         <option key={m.value} value={m.value}>{m.label}</option>
@@ -483,12 +495,12 @@ const PayrollManagementPage = () => {
     <div className="payroll-management-page">
       <Container fluid>
         <div className="page-header">
-          <div className="d-flex justify-content-between align-items-center mb-4">
-            <div>
+          <div className="d-flex justify-content-between align-items-center mb-4 header-flex-container">
+            <div className="flex-grow-1">
               <h1 className="page-title">Payroll Management</h1>
               <p className="page-subtitle text-muted">Create, process, review, and lock monthly payroll</p>
             </div>
-            <div>
+            <div className="flex-shrink-0">
               <Button variant="primary" onClick={() => setShowCreateModal(true)}>
                 <i className="fas fa-plus me-2"></i>
                 Create New Payroll Run
@@ -523,5 +535,3 @@ const PayrollManagementPage = () => {
 };
 
 export default PayrollManagementPage;
-
-

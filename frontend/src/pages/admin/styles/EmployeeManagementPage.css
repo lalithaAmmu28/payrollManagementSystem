@@ -17,6 +17,41 @@
   margin-bottom: 0.25rem;
 }
 
+/* Ensure header row hugs container edges */
+.page-header .row.g-0 {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.page-header .row.g-0 > [class^="col"],
+.page-header .row.g-0 > [class*=" col"] {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+/* Clean header layout */
+.employee-management-page .add-employee-btn {
+  white-space: nowrap;
+}
+
+/* Force proper spacing in header */
+.employee-management-page .header-flex-container {
+  width: 100% !important;
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  min-height: 80px;
+}
+
+.employee-management-page .header-flex-container > div:first-child {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.employee-management-page .header-flex-container > div:last-child {
+  flex: 0 0 auto;
+}
+
 .page-header .page-subtitle {
   font-size: 16px;
   color: var(--color-text-body);

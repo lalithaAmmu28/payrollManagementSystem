@@ -5,6 +5,24 @@
   background: var(--color-bg-primary);
 }
 
+/* Force proper spacing in header */
+.reports-page .header-flex-container {
+  width: 100% !important;
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  min-height: 80px;
+}
+
+.reports-page .header-flex-container > div:first-child {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.reports-page .header-flex-container > div:last-child {
+  flex: 0 0 auto;
+}
+
 /* Page Header */
 .page-header .page-title {
   color: var(--color-text-heading);

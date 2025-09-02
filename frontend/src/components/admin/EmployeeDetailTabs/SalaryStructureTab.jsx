@@ -135,15 +135,8 @@ const SalaryStructureTab = ({ employeeId }) => {
         </div>
       ) : (
         <div className="salary-timeline">
-          {salaryStructures.map((structure, index) => (
+          {salaryStructures.map((structure) => (
             <div key={structure.structureId} className="timeline-item">
-              <div className="timeline-marker">
-                <div className={`${isCurrentStructure(structure) ? 'active' : ''}`}>
-                  <i className="fas"></i>
-                </div>
-                {index < salaryStructures.length - 1 && <div className="timeline-line"></div>}
-              </div>
-              
               <div className="timeline-content">
                 <div className="structure-card">
                   <div className="structure-header">

@@ -102,58 +102,56 @@ const EmployeeManagementPage = () => {
     <div className="employee-management-page">
       <Container fluid>
         <Row>
-          <Col lg={showDetailPane ? 5 : 12} className="main-content">
-            <div className="page-header">
-              <div className="d-flex justify-content-between align-items-center mb-4">
-                <div>
+          <Col lg={showDetailPane ? 5 : 12} className="main-content px-0">
+            <div className="page-header px-3">
+              <div className="d-flex justify-content-between align-items-center mb-3 header-flex-container">
+                <div className="flex-grow-1">
                   <h1 className="page-title">Employee Management</h1>
                   <p className="page-subtitle text-muted">
                     Manage employee information, salary structures, and access
                   </p>
                 </div>
-                <Button
-                  variant="primary"
-                  onClick={() => setShowAddModal(true)}
-                  className="add-employee-btn"
-                >
-                  <i className="fas fa-plus me-2"></i>
-                  Add Employee
-                </Button>
+                <div className="flex-shrink-0">
+                  <Button
+                    variant="primary"
+                    onClick={() => setShowAddModal(true)}
+                    className="add-employee-btn"
+                  >
+                    <i className="fas fa-plus me-2"></i>
+                    Add Employee
+                  </Button>
+                </div>
               </div>
-
-              {/* Search and Filter Bar */}
-              <Card className="filter-card mb-4">
-                <Card.Body>
-                  <Row>
-                    <Col md={6}>
-                      <InputGroup>
-                        <InputGroup.Text>
-                          <i className="fas fa-search"></i>
-                        </InputGroup.Text>
-                        <Form.Control
-                          type="text"
-                          placeholder="Search employees by name, email, department, or job title..."
-                          value={searchTerm}
-                          onChange={(e) => setSearchTerm(e.target.value)}
-                        />
-                      </InputGroup>
-                    </Col>
-                    <Col md={6} className="d-flex justify-content-end align-items-center">
-                      <span className="text-muted">
-                        {loading ? (
-                          <SkeletonLoader width="100px" height="20px" />
-                        ) : (
-                          `${filteredEmployees.length} employee${filteredEmployees.length !== 1 ? 's' : ''} found`
-                        )}
-                      </span>
-                    </Col>
-                  </Row>
-                </Card.Body>
-              </Card>
             </div>
 
+            {/* Search Bar placed below header, outside any flex containers */}
+            <Row className="mb-4 px-3">
+              <Col md={8} lg={6}>
+                <InputGroup>
+                  <InputGroup.Text>
+                    <i className="fas fa-search"></i>
+                  </InputGroup.Text>
+                  <Form.Control
+                    type="text"
+                    placeholder="Search employees by name, email, department, or job title..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                  />
+                </InputGroup>
+              </Col>
+              <Col md={4} lg={6} className="d-flex justify-content-end align-items-center mt-2 mt-md-0">
+                <span className="text-muted">
+                  {loading ? (
+                    <SkeletonLoader width="100px" height="20px" />
+                  ) : (
+                    `${filteredEmployees.length} employee${filteredEmployees.length !== 1 ? 's' : ''} found`
+                  )}
+                </span>
+              </Col>
+            </Row>
+
             {/* Employee Table */}
-            <Card className="employee-table-card">
+            <Card className="employee-table-card mx-3">
               <Card.Body>
                 {loading ? (
                   <div className="skeleton-table">

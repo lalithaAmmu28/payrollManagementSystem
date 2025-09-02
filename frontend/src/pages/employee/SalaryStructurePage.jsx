@@ -118,7 +118,7 @@ const SalaryStructurePage = () => {
                   </div>
                 </div>
 
-                {/* Note: Allowances and deductions are not available in employee view */}
+                {/* Note: Allowances and deductions are not available in employee view
                 {currentSalary.notes && currentSalary.notes.includes('Current salary information') && (
                   <div className="salary-note">
                     <i className="fas fa-info-circle me-2 text-muted"></i>
@@ -126,7 +126,7 @@ const SalaryStructurePage = () => {
                       Monthly salary calculated from your annual job role salary. Detailed allowances and deductions are available in your payslips.
                     </small>
                   </div>
-                )}
+                )} */}
 
                 {currentSalary.allowances && currentSalary.allowances > 0 && (
                   <div className="salary-item">
@@ -213,122 +213,7 @@ const SalaryStructurePage = () => {
     );
   };
 
-  const renderSalaryHistory = () => {
-    if (salaryStructures.length === 0) {
-      return (
-        <Alert variant="info">
-          <i className="fas fa-history me-2"></i>
-          No salary history available.
-        </Alert>
-      );
-    }
-
-    // For employees, show a simplified view since detailed history is admin-only
-    if (salaryStructures.length === 1 && salaryStructures[0].notes && salaryStructures[0].notes.includes('Current salary information')) {
-      return (
-        <Card className="salary-history-card">
-          <Card.Header>
-            <h4 className="mb-0">
-              <i className="fas fa-info-circle me-2"></i>
-              Salary Information
-            </h4>
-            <small className="text-muted">Your current salary details</small>
-          </Card.Header>
-          <Card.Body>
-            <Alert variant="info" className="mb-0">
-              <div className="d-flex align-items-center">
-                <i className="fas fa-lock me-3"></i>
-                <div>
-                  <strong>Job Role Based Salary:</strong> This shows your base salary from your assigned job role. 
-                  For detailed salary structures, allowances, and historical changes, please contact your HR department.
-                </div>
-              </div>
-            </Alert>
-          </Card.Body>
-        </Card>
-      );
-    }
-
-    return (
-      <Card className="salary-history-card">
-        <Card.Header>
-          <h4 className="mb-0">
-            <i className="fas fa-history me-2"></i>
-            Salary History
-          </h4>
-          <small className="text-muted">Your complete salary structure timeline</small>
-        </Card.Header>
-        <Card.Body>
-          <div className="salary-timeline">
-            {salaryStructures.map((structure, index) => {
-              const isCurrent = currentSalary && structure.id === currentSalary.id;
-              const netSalary = (structure.baseSalary || 0) + 
-                               (structure.allowances || 0) - 
-                               (structure.deductions || 0);
-              
-              return (
-                <div key={structure.id} className={`timeline-item ${isCurrent ? 'current' : ''}`}>
-                  <div className="timeline-marker">
-                    <i className={`fas ${isCurrent ? 'fa-star' : 'fa-circle'}`}></i>
-                  </div>
-                  
-                  <div className="timeline-content">
-                    <div className="timeline-header">
-                      <div className="timeline-date">
-                        <strong>Effective: {formatDate(structure.effectiveDate)}</strong>
-                        {isCurrent && (
-                          <Badge bg="success" className="ms-2">Current</Badge>
-                        )}
-                      </div>
-                      <div className="timeline-salary">
-                        {formatCurrency(netSalary)}/month
-                      </div>
-                    </div>
-                    
-                    <div className="timeline-details">
-                      <Row>
-                        <Col md={4}>
-                          <div className="detail-item">
-                            <span className="detail-label">Base Salary:</span>
-                            <span className="detail-value">{formatCurrency(structure.baseSalary)}</span>
-                          </div>
-                        </Col>
-                        
-                        {structure.allowances && structure.allowances > 0 && (
-                          <Col md={4}>
-                            <div className="detail-item">
-                              <span className="detail-label">Allowances:</span>
-                              <span className="detail-value positive">+{formatCurrency(structure.allowances)}</span>
-                            </div>
-                          </Col>
-                        )}
-                        
-                        {structure.deductions && structure.deductions > 0 && (
-                          <Col md={4}>
-                            <div className="detail-item">
-                              <span className="detail-label">Deductions:</span>
-                              <span className="detail-value negative">-{formatCurrency(structure.deductions)}</span>
-                            </div>
-                          </Col>
-                        )}
-                      </Row>
-                      
-                      {structure.notes && (
-                        <div className="structure-notes">
-                          <i className="fas fa-sticky-note me-1"></i>
-                          <em>{structure.notes}</em>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </Card.Body>
-      </Card>
-    );
-  };
+  const renderSalaryHistory = () => null;
 
   if (loading) {
     return (
@@ -373,25 +258,7 @@ const SalaryStructurePage = () => {
       </Row>
 
       {/* Salary History */}
-      <Row>
-        <Col>
-          {renderSalaryHistory()}
-        </Col>
-      </Row>
-
-      {/* Help Section */}
-      <Row className="mt-4">
-        <Col>
-          <Alert variant="info" className="help-alert">
-            <div className="d-flex align-items-center">
-              <i className="fas fa-info-circle me-3"></i>
-              <div>
-                <strong>Questions about your salary?</strong> Contact HR at hr@company.com or your manager for any clarifications about your salary structure, allowances, or deductions.
-              </div>
-            </div>
-          </Alert>
-        </Col>
-      </Row>
+      
     </Container>
   );
 };
