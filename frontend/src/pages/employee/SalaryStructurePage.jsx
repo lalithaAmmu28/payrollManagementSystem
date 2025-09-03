@@ -241,7 +241,7 @@ const SalaryStructurePage = () => {
         <div className="header-actions">
           <Button 
             variant="outline-primary" 
-            onClick={fetchSalaryStructures}
+            onClick={async () => { await fetchSalaryStructures(); showToast('Salary information refreshed', 'success'); }}
             disabled={loading}
           >
             <i className="fas fa-sync-alt me-2"></i>

@@ -117,7 +117,9 @@ const OrgSettingsPage = () => {
         showToast('Job role deleted successfully!', 'success');
       }
     } catch (error) {
-      showToast(`Failed to delete ${type}`, 'error');
+      const backendMessage = error?.response?.data?.message;
+      const humanType = type === 'department' ? 'Department' : 'Job role';
+      showToast(backendMessage || `Failed to delete ${humanType.toLowerCase()}`, 'error');
       console.error('Delete error:', error);
     } finally {
       setDeleteConfirm(null);

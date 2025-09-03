@@ -22,7 +22,7 @@ const LoginPage = () => {
   const { login, isAuthenticated, role } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
-  const { showSuccess, showError } = useToast();
+  const { showSuccess, showError, showToast } = useToast();
   
   const [errorMessage, setErrorMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -67,6 +67,7 @@ const LoginPage = () => {
     } catch (error) {
       console.error('Login error:', error);
       setErrorMessage('An unexpected error occurred. Please try again.');
+      showToast('Login failed. Please try again.', 'error');
     } finally {
       setIsLoading(false);
       setSubmitting(false);

@@ -123,7 +123,7 @@ const ReportsPage = () => {
         color: 'primary'
       },
       {
-        title: 'Active Leave Requests',
+        title: 'Total Leave Requests',
         value: overallLeave[0] || 0, // Total leave requests
         icon: 'fas fa-calendar-alt',
         color: 'warning'

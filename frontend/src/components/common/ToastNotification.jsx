@@ -66,6 +66,18 @@ export const ToastProvider = ({ children }) => {
     addToast,
     removeToast,
     clearAll,
+    // Generic helper to align with existing calls: showToast(message, 'success'|'error'|'warning'|'info', options)
+    showToast: (message, type = 'info', options = {}) => {
+      const variantMap = {
+        success: 'success',
+        error: 'danger',
+        danger: 'danger',
+        warning: 'warning',
+        info: 'info',
+      };
+      const variant = variantMap[String(type).toLowerCase()] || 'info';
+      return addToast(message, variant, options);
+    },
     showSuccess,
     showError,
     showWarning,

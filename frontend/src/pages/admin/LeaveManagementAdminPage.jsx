@@ -278,7 +278,7 @@ const LeaveManagementAdminPage = () => {
                     <Button
                       variant="outline-secondary"
                       size="sm"
-                      onClick={() => fetchLeaveRequests(activeTab)}
+                      onClick={async () => { await fetchLeaveRequests(activeTab); showToast('Requests refreshed', 'success'); }}
                       disabled={loading}
                     >
                       <i className="fas fa-sync-alt me-2"></i>
@@ -305,7 +305,7 @@ const LeaveManagementAdminPage = () => {
                     <Button
                       variant="outline-secondary"
                       size="sm"
-                      onClick={() => fetchLeaveRequests(activeTab)}
+                      onClick={async () => { await fetchLeaveRequests(activeTab); showToast('Approved list refreshed', 'success'); }}
                       disabled={loading}
                     >
                       <i className="fas fa-sync-alt me-2"></i>
@@ -332,7 +332,7 @@ const LeaveManagementAdminPage = () => {
                     <Button
                       variant="outline-secondary"
                       size="sm"
-                      onClick={() => fetchLeaveRequests(activeTab)}
+                      onClick={async () => { await fetchLeaveRequests(activeTab); showToast('Rejected list refreshed', 'success'); }}
                       disabled={loading}
                     >
                       <i className="fas fa-sync-alt me-2"></i>
