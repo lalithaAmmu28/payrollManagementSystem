@@ -83,6 +83,43 @@ const SalaryStructureTab = ({ employeeId }) => {
     return effectiveFrom <= today && (!effectiveTo || effectiveTo >= today);
   };
 
+  const renderBonusDetails = (bonusDetails) => {
+    if (!bonusDetails) return null;
+
+    let parsed = bonusDetails;
+    if (typeof parsed === 'string') {
+      try {
+        parsed = JSON.parse(parsed);
+      } catch (e) {
+        return <span>{parsed}</span>;
+      }
+    }
+
+    if (typeof parsed === 'object' && parsed !== null) {
+      const hasPercentage = Object.prototype.hasOwnProperty.call(parsed, 'percentage');
+      const hasFixed = Object.prototype.hasOwnProperty.call(parsed, 'fixed');
+
+      if (hasPercentage || hasFixed) {
+        return (
+          <ul className="mb-0 ps-3">
+            {hasPercentage && <li>Percentage: {parsed.percentage}%</li>}
+            {hasFixed && <li>Fixed: {formatCurrency(parsed.fixed)}</li>}
+          </ul>
+        );
+      }
+
+      return (
+        <ul className="mb-0 ps-3">
+          {Object.entries(parsed).map(([key, value]) => (
+            <li key={key}>{key}: {String(value)}</li>
+          ))}
+        </ul>
+      );
+    }
+
+    return <span>{String(parsed)}</span>;
+  };
+
   if (loading) {
     return (
       <div className="salary-structure-tab">
@@ -155,10 +192,7 @@ const SalaryStructureTab = ({ employeeId }) => {
                     <div className="structure-bonus">
                       <small className="text-muted">Bonus Details:</small>
                       <div className="bonus-text">
-                        {typeof structure.bonusDetails === 'string' 
-                          ? structure.bonusDetails 
-                          : JSON.stringify(structure.bonusDetails)
-                        }
+                        {renderBonusDetails(structure.bonusDetails)}
                       </div>
                     </div>
                   )}
